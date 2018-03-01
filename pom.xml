@@ -54,7 +54,7 @@
             <version>2.5.3</version>
             <scope>test</scope>
         </dependency>
-        
+
         <!-- added by me -->
         <dependency>
             <groupId>io.rest-assured</groupId>

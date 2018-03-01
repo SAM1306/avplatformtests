@@ -16,17 +16,16 @@ import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.lessThan;
 
 
-
 @RunWith(SerenityRunner.class)
-public class RetrieveFromAV {
+public class RetrieveImagesAndClips {
     static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
     static String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
-    String mediaUrl ="https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
+    String mediaUrl ="https:/mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
 
     @BeforeClass
     public static void init() {
 
-        RestAssured.baseURI = "mediaUrl";
+        RestAssured.baseURI = "https:/mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
         //    String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
         //   String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
 
@@ -38,7 +37,7 @@ public class RetrieveFromAV {
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
                 .when()
-                .get(mediaUrl)
+                .get()
                 .then()
                 .log()
                 .all()

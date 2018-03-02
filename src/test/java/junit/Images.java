@@ -30,6 +30,7 @@ public class Images {
     static String ImageMediaURL= "https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
 
     static String InvalidImageMediaURL ="https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cb6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
+    static String InvalidImageId ="SZ-pKIbYSKc0Y2nI";
     String InvalidUserToken = "affbffcff";
     String InvalidSourceId = "17c9f33d4c3";
 
@@ -114,10 +115,39 @@ public class Images {
         System.out.println("Image record requested");
         System.out.println("ImageID: " + imageID);
 
+        SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("image/jpeg")
+                .queryParam("source_id", SourceId)
+                .queryParam("image_id",imageID)
+                .when()
+                .get("/image")
+                .then()
+                .log()
+                .all()
+                .statusCode(200)
+                // .extract()//Response status code
+                .statusLine("HTTP/1.1 200 OK")          //Status Line
+                .contentType("application/json");
+
+        SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("image/jpeg")
+                .when()
+                .queryParam("source_id", SourceId)
+                .queryParam("image_id",imageID)
+                .delete("/image")
+                .then()
+                .log()
+                .all()
+                .statusCode(204);
+
+        System.out.println("Image deleted");
+
 
 // Retrieve the body of the Response
-        String responseBody = response.toString();
-        responseBody.contains("ContentType");
+   //     String responseBody = response.toString();
+    //    responseBody.contains("ContentType");
 
         //  .assertThat(body);
 
@@ -361,5 +391,84 @@ public class Images {
                 .all()
                 .statusCode(404);
     }
+
+    @Title("Delete Image Invalid ImageId") // First Record and then pass imageId to delete
+    @Test
+    public void deleteImage() throws InterruptedException {
+
+    /*    ValidatableResponse response = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("application/x-www-form-urlencoded")
+                .param("source_id", SourceId)
+                .when()
+                .post("/image/record")
+                .then()
+                .log()
+                .all()
+                .statusCode(201).and().time(lessThan(1000L));
+
+        String responseStr = response.extract().body().asString();
+
+        Gson gson = new Gson(); //TODO Fix
+        JsonParser jp = new JsonParser();
+        JsonElement je = jp.parse(responseStr);
+        JsonObject responseBodyObject = je.getAsJsonObject();
+
+        JsonElement image = responseBodyObject.get("image");
+        JsonObject imageObject = image.getAsJsonObject();
+
+        String imageId = imageObject.get("id").getAsString();
+        System.out.println("Image Id: " + imageId);
+
+        Thread.sleep(2000);
+
+    */
+        ValidatableResponse getResponse = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("image/jpeg")
+                .when()
+                .queryParam("source_id", SourceId)
+                .queryParam("image_id",InvalidImageId)
+                .delete("/image")
+                .then()
+                .log()
+                .all()
+                .statusCode(404);
+    }
+
+    @Title("Delete Image Invalid SourceId") // First Record and then pass imageId to delete
+    @Test
+    public void deleteImageInvalidSourceId() throws InterruptedException {
+
+        ValidatableResponse getResponse = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("image/jpeg")
+                .when()
+                .queryParam("source_id", InvalidSourceId)
+                .queryParam("image_id",ImageId)
+                .delete("/image")
+                .then()
+                .log()
+                .all()
+                .statusCode(404);
+    }
+
+    @Title("Delete Image Invalid Auth") // First Record and then pass imageId to delete
+    @Test
+    public void deleteImageInvalidAuth() throws InterruptedException {
+
+        ValidatableResponse getResponse = SerenityRest.given()
+                .auth().oauth2(InvalidUserToken)
+                .contentType("image/jpeg")
+                .when()
+                .queryParam("source_id", SourceId)
+                .queryParam("image_id",ImageId)
+                .delete("/image")
+                .then()
+                .log()
+                .all()
+                .statusCode(403);
+    }
+
 
 }

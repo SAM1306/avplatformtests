@@ -1,21 +1,17 @@
 package junit;
 
-        import com.google.gson.Gson;
-        import com.google.gson.JsonElement;
-        import com.google.gson.JsonObject;
-        import com.google.gson.JsonParser;
-        import io.restassured.RestAssured;
-        import io.restassured.response.ValidatableResponse;
-        import net.serenitybdd.junit.runners.SerenityRunner;
-        import net.serenitybdd.rest.SerenityRest;
-        import net.thucydides.core.annotations.Title;
-        import org.junit.BeforeClass;
-        import org.junit.Test;
-        import org.junit.runner.RunWith;
+import io.restassured.RestAssured;
+import net.serenitybdd.junit.runners.SerenityRunner;
+import net.serenitybdd.rest.SerenityRest;
+import net.thucydides.core.annotations.Title;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-        import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 
-        import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SerenityRunner.class)
 public class Zones {
@@ -27,9 +23,7 @@ public class Zones {
 
     @BeforeClass
     public static void init() {
-
         RestAssured.baseURI = "https://api.s.st-av.net/v1";
-
     }
 
     @Title("List all Zones for the given source")
@@ -64,20 +58,41 @@ public class Zones {
     }
 
 
-   //TODO Send Coordinates
-  /*  @Title("Create a Zone")
+    //TODO Send Coordinates
+    @Title("Create a Zone")
     @Test
     public void postZone() {
 
-        int[][] zoneCoordinates = new int[2][2];
-       // zoneCoordinates[0][0] =
+        List<List<Integer>> zoneCoordinates = new ArrayList<List<Integer>>();
+
+        List<Integer> list1 = new ArrayList<Integer>();
+        list1.add(1);
+        list1.add(0);
+
+        List<Integer> list2 = new ArrayList<Integer>();
+        list2.add(1);
+        list2.add(1);
+
+        List<Integer> list3 = new ArrayList<Integer>();
+        list3.add(2);
+        list3.add(0);
+
+        List<Integer> list4 = new ArrayList<Integer>();
+        list4.add(2);
+        list4.add(1);
+
+        zoneCoordinates.add(list1);
+        zoneCoordinates.add(list2);
+        zoneCoordinates.add(list3);
+        zoneCoordinates.add(list4);
+
 
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
                 .queryParam("source_id", SourceId)
-                .param("name", "Zone_9")
-                .param("coordinates", "{[1,0], [1,1], [2,0], [2,1]}")
+                .param("name", "Zone_87")
+                .param("coordinates", zoneCoordinates)
                 .when()
                 .post("/zone")
                 .then()
@@ -85,7 +100,7 @@ public class Zones {
                 .all()
                 .statusCode(201)
                 .and().time(lessThan(1000L));
-    }*/
+    }
 
  /* //TODO Add Post a zone, get a Zone by Id, delete a Zone, get deleted Zone by ID
     @Title("Get a Zones by ID")
@@ -105,7 +120,6 @@ public class Zones {
     }
 
 */
-
 
 }
 

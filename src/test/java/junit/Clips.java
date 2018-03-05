@@ -32,8 +32,8 @@ public class Clips {
     static String ClipID = "2f4nKNN0P9AiOVlW9qURJ";
     static String InvalidClipID = "2f4nKNN0VlW9qURJ";
 
-    String InvalidUserToken = "affbffcff";
-    String InvalidSourceId = "17c9f33d4c3";
+    static String InvalidUserToken = "affbffcff";
+    static String InvalidSourceId = "17c9f33d4c3";
 
 
     @BeforeClass
@@ -278,4 +278,45 @@ public class Clips {
         responseStr.contains("source: ec31e3fa-4609-4c19-9263-000446729196 is offline");
     }
 
+    @Title("Request Clip Record - Invalid UserToken")
+    @Test
+    public void postClipInvalidAuth() {
+        ValidatableResponse response = SerenityRest.given()
+                .auth().oauth2(InvalidUserToken)
+                .contentType("application/x-www-form-urlencoded")
+                .param("source_id", SourceId)
+                .param("duration", 20)
+                .when()
+                .post("/clip/record")
+                .then()
+                .log()
+                .all()
+                .statusCode(403)
+                .time(lessThan(1000L));
+
+        System.out.println("Clip record requested with Invalid Auth");
+
+
+    }
+
+    @Title("Request Clip Record - Invalid SourceId")
+    @Test
+    public void postClipInvalidSourceId() {
+        ValidatableResponse response = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("application/x-www-form-urlencoded")
+                .param("source_id", InvalidSourceId)
+                .param("duration", 20)
+                .when()
+                .post("/clip/record")
+                .then()
+                .log()
+                .all()
+                .statusCode(404)
+                .time(lessThan(1000L));
+
+        System.out.println("Clip record requested with Invalid SourceId");
+
+
+    }
 }

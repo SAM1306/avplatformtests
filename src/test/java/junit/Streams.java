@@ -22,7 +22,9 @@ public class Streams {
     static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
     static String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
     static String offlineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
+
     static String InvalidUserToken = "aff6e157-bbe1";
+    static String InvalidSourceId = "1e3fa-4609-4c19-";
 
     String mediaUrl = "";
     static String StreamID = "TyauHPKdbRbi9MwkmoezS";
@@ -311,5 +313,23 @@ public class Streams {
 
     }
 
+    @Title("Request Live Stream with Invalid SourceId")
+    @Test
+    public void postStreamInvalidSourceId() {
+        ValidatableResponse response = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("application/x-www-form-urlencoded")
+                .param("source_id", InvalidSourceId)
+                .when()
+                .post("/stream")
+                .then()
+                .log()
+                .all()
+                .statusCode(404)
+                .time(lessThan(1000L));
+
+        String responseStr = response.extract().body().asString();
+
+    }
 
 }

@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.lessThan;
 @RunWith(SerenityRunner.class)
 
 public class OtherTests {
-    
+
         static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
         static String SourceId_1 = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
 
@@ -235,9 +235,6 @@ public class OtherTests {
         //.time(lessThan(1000L));
 
         System.out.println("Clip details retrieved");
-
-
-
 
     }
 }

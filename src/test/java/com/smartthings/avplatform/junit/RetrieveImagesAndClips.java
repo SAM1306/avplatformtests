@@ -1,4 +1,5 @@
-package junit;
+/*
+package com.smartthings.avplatform.junit;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -10,6 +11,7 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -30,6 +32,8 @@ public class RetrieveImagesAndClips {
         //   String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
 
     }
+
+    @Ignore
     @Title("RetrieveAnImage")
     @Test
     public void retrieveAnImage() {
@@ -46,3 +50,4 @@ public class RetrieveImagesAndClips {
 
     }
 }
+*/

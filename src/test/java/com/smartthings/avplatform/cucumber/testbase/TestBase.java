@@ -1,4 +1,4 @@
-package testbase;
+package com.smartthings.avplatform.cucumber.testbase;
 
 import io.restassured.RestAssured;
 import org.junit.BeforeClass;

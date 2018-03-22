@@ -1,15 +1,19 @@
-package junit;
+
+
+package com.smartthings.avplatform.junit;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.smartthings.avplatform.testbase.TestBase;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,29 +21,27 @@ import static org.hamcrest.Matchers.lessThan;
 
 
 @RunWith(SerenityRunner.class)
-public class Images {
+public class Images extends TestBase {
 
-    String mediaUrl = "";
 
     static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
     static String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
     static String offlineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
-   // static String ClipID = "2f4nKNN0P9AiOVlW9qURJ";
-   // static String InvalidClipID = "2f4nKNN0VlW9qURJ";
     static String ImageId ="SZ-pKIbYS4oMDgKc0Y2nI";
     static String ImageMediaURL= "https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
 
     static String InvalidImageMediaURL ="https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cb6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
     static String InvalidImageId ="SZ-pKIbYSKc0Y2nI";
+
+    static Long ResponseTime = 10000L;
+
     String InvalidUserToken = "affbffcff";
     String InvalidSourceId = "17c9f33d4c3";
 
+
     @BeforeClass
     public static void init() {
-
         RestAssured.baseURI = "https://api.s.st-av.net/v1";
-        //    String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
-        //   String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
     }
 
     @Title("List all Images for the given source")
@@ -87,10 +89,9 @@ public class Images {
                 .statusCode(403);
     }
 
-
     @Title("Record, Get, Delete and Get Deleted Image")
     @Test
-    public void postGetDeleteImage() {
+    public void postGetDeleteImage() throws InterruptedException {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -100,7 +101,8 @@ public class Images {
                 .then()
                 .log()
                 .all()
-                .statusCode(201).and().time(lessThan(1000L));
+                .statusCode(201);
+                //.and().time(lessThan(ResponseTime));
 
         String responseStr = response.extract().body().asString();
         Gson gson = new Gson();
@@ -114,6 +116,8 @@ public class Images {
 
         System.out.println("Image record requested");
         System.out.println("ImageID: " + imageID);
+
+        Thread.sleep(2000);
 
         SerenityRest.given()
                 .auth().oauth2(UserToken)
@@ -142,15 +146,19 @@ public class Images {
                 .all()
                 .statusCode(204);
 
+        SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("image/jpeg")
+                .queryParam("source_id", SourceId)
+                .queryParam("image_id",imageID)
+                .when()
+                .get("/image")
+                .then()
+                .log()
+                .all()
+                .statusCode(404);
+
         System.out.println("Image deleted");
-
-
-// Retrieve the body of the Response
-   //     String responseBody = response.toString();
-    //    responseBody.contains("ContentType");
-
-        //  .assertThat(body);
-
     }
 
     @Title("GetAnImage") // Retrieves details of most recent recorded image
@@ -221,7 +229,8 @@ public class Images {
 
     }
 
-    @Title("GetAnImage with ImageId")
+    @Ignore
+    @Title("GetAnImage with ImageId") //Record and pass ImageId. Covered in above test case
     @Test
     public void getAnImageById() {
         ValidatableResponse response = SerenityRest.given()
@@ -274,6 +283,22 @@ public class Images {
     }
         //Status Line
 
+    @Title("GetAnImage InvalidImageId")
+    @Test
+    public void getAnImageInvalidImageId() {
+        ValidatableResponse response = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("image/jpeg")
+                .queryParam("source_id", SourceId)
+                .queryParam("image_id", InvalidImageId)
+                .when()
+                .get("/image")
+                .then()
+                .log()
+                .all()
+                .statusCode(404);
+    }
+
 
     @Title("Record Image")
     @Test
@@ -287,7 +312,7 @@ public class Images {
                 .then()
                 .log()
                 .all()
-                .statusCode(201).and().time(lessThan(1000L));
+                .statusCode(201).and().time(lessThan(ResponseTime));
     }
 
     @Title("Record Image Offline Source")
@@ -302,7 +327,7 @@ public class Images {
                 .then()
                 .log()
                 .all()
-                .statusCode(403).and().time(lessThan(1000L));
+                .statusCode(403).and().time(lessThan(ResponseTime));
     }
 
     @Title("Record Image Invalid Auth")
@@ -317,7 +342,8 @@ public class Images {
                 .then()
                 .log()
                 .all()
-                .statusCode(403).and().time(lessThan(1000L));
+                .statusCode(403);
+                //.and().time(lessThan(ResponseTime));
     }
 
     @Title("Record Image Invalid SourceId")
@@ -332,7 +358,8 @@ public class Images {
                 .then()
                 .log()
                 .all()
-                .statusCode(404).and().time(lessThan(1000L));
+                .statusCode(404);
+                //.and().time(lessThan(ResponseTime));
     }
 
 
@@ -349,8 +376,10 @@ public class Images {
                 .then()
                 .log()
                 .all()
-                .statusCode(201).and().time(lessThan(1000L));
+                .statusCode(201);
+                //.and().time(lessThan(ResponseTime));
 
+        Thread.sleep(5000);
         String responseStr = response.extract().body().asString();
 
         Gson gson = new Gson(); //TODO Fix
@@ -364,11 +393,8 @@ public class Images {
         String mediaURL = imageObject.get("media_url").getAsString();
         System.out.println("Image MediaURL: " + mediaURL);
 
-        Thread.sleep(2000);
-
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
-                .contentType("image/jpeg")
                 .when()
                 .get(mediaURL)
                 .then()
@@ -396,7 +422,7 @@ public class Images {
     @Test
     public void deleteImage() throws InterruptedException {
 
-    /*    ValidatableResponse response = SerenityRest.given()
+   ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .param("source_id", SourceId)
@@ -405,7 +431,8 @@ public class Images {
                 .then()
                 .log()
                 .all()
-                .statusCode(201).and().time(lessThan(1000L));
+                .statusCode(201);
+                  // and().time(lessThan(1000L));
 
         String responseStr = response.extract().body().asString();
 
@@ -422,7 +449,6 @@ public class Images {
 
         Thread.sleep(2000);
 
-    */
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
@@ -472,3 +498,4 @@ public class Images {
 
 
 }
+

@@ -1,12 +1,11 @@
 
 
-package com.smartthings.avplatform.junit;
+package com.smartthings.avplatform.api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.smartthings.avplatform.testbase.TestBase;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
@@ -17,15 +16,18 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasValue;
 import static org.hamcrest.Matchers.lessThan;
 
 
 @RunWith(SerenityRunner.class)
-public class Images extends TestBase {
+public class Images{
 
 
     static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
     static String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
+    static String SourceId2 = "15f53d51-2ec0-4535-b28d-ec50f16cf6e0";
     static String offlineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
     static String ImageId ="SZ-pKIbYS4oMDgKc0Y2nI";
     static String ImageMediaURL= "https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
@@ -33,10 +35,14 @@ public class Images extends TestBase {
     static String InvalidImageMediaURL ="https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cb6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
     static String InvalidImageId ="SZ-pKIbYSKc0Y2nI";
 
+    static String ContentType="application/x-www-form-urlencoded";
     static Long ResponseTime = 10000L;
 
     String InvalidUserToken = "affbffcff";
     String InvalidSourceId = "17c9f33d4c3";
+
+    // @Steps
+    // SerenitySteps steps;
 
 
     @BeforeClass
@@ -102,7 +108,7 @@ public class Images extends TestBase {
                 .log()
                 .all()
                 .statusCode(201);
-                //.and().time(lessThan(ResponseTime));
+        //.and().time(lessThan(ResponseTime));
 
         String responseStr = response.extract().body().asString();
         Gson gson = new Gson();
@@ -196,6 +202,7 @@ public class Images extends TestBase {
                 // .extract()//Response status code
                 .statusLine("HTTP/1.1 200 OK")          //Status Line
                 .contentType("application/json");
+        //.assertThat().content("state", equalTo("present"));
 
         String responseStr = response.extract().body().asString();
 
@@ -205,6 +212,7 @@ public class Images extends TestBase {
         JsonParser jp = new JsonParser();
         JsonElement je = jp.parse(responseStr);
         JsonObject responseBodyObject = je.getAsJsonObject();
+
         JsonElement image = responseBodyObject.get("image");
         JsonObject imageObject = image.getAsJsonObject();
         String mediaUrl = imageObject.get("media_url").getAsString();
@@ -279,9 +287,9 @@ public class Images extends TestBase {
                 .log()
                 .all()
                 .statusCode(404);
-                // .extract()//Response status code
+        // .extract()//Response status code
     }
-        //Status Line
+    //Status Line
 
     @Title("GetAnImage InvalidImageId")
     @Test
@@ -343,7 +351,7 @@ public class Images extends TestBase {
                 .log()
                 .all()
                 .statusCode(403);
-                //.and().time(lessThan(ResponseTime));
+        //.and().time(lessThan(ResponseTime));
     }
 
     @Title("Record Image Invalid SourceId")
@@ -359,7 +367,7 @@ public class Images extends TestBase {
                 .log()
                 .all()
                 .statusCode(404);
-                //.and().time(lessThan(ResponseTime));
+        //.and().time(lessThan(ResponseTime));
     }
 
 
@@ -377,7 +385,7 @@ public class Images extends TestBase {
                 .log()
                 .all()
                 .statusCode(201);
-                //.and().time(lessThan(ResponseTime));
+        //.and().time(lessThan(ResponseTime));
 
         Thread.sleep(5000);
         String responseStr = response.extract().body().asString();
@@ -422,7 +430,7 @@ public class Images extends TestBase {
     @Test
     public void deleteImage() throws InterruptedException {
 
-   ValidatableResponse response = SerenityRest.given()
+        ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .param("source_id", SourceId)
@@ -431,8 +439,9 @@ public class Images extends TestBase {
                 .then()
                 .log()
                 .all()
-                .statusCode(201);
-                  // and().time(lessThan(1000L));
+                .statusCode(201)
+                .contentType("application/json");
+        // and().time(lessThan(1000L));
 
         String responseStr = response.extract().body().asString();
 
@@ -446,6 +455,8 @@ public class Images extends TestBase {
 
         String imageId = imageObject.get("id").getAsString();
         System.out.println("Image Id: " + imageId);
+
+
 
         Thread.sleep(2000);
 
@@ -496,6 +507,43 @@ public class Images extends TestBase {
                 .statusCode(403);
     }
 
-
+//    @Title("Record Image with ReusableMethods and Steps")
+//    @Test
+//    public void postImageRecordSteps() {
+//        ValidatableResponse response = steps.recordImage(UserToken,ContentType,SourceId2)
+//                .statusCode(201)
+//                .statusLine("HTTP/1.1 201 Created");
+//
+//        String responseStr = response.extract().body().asString();
+//
+//        Gson gson = new Gson(); //TODO Fix
+//        JsonParser jp = new JsonParser();
+//        JsonElement je = jp.parse(responseStr);
+//        JsonObject responseBodyObject = je.getAsJsonObject();
+//
+//        JsonElement image = responseBodyObject.get("image");
+//        JsonObject imageObject = image.getAsJsonObject();
+//
+//        String imageId = imageObject.get("id").getAsString();
+//        System.out.println("Image Id: " + imageId);
+//
+//        String responseBody = response.toString();
+//
+//        responseBody.contains("ContentType");
+//        responseBody.contains("OK");
+//        responseBody.contains("201");
+//
+//        responseBody.contains("image");
+//        responseBody.contains("expires_at");
+//        responseBody.contains("clip_id");
+//        responseBody.contains("media_url");
+//        responseBody.contains("start");
+//        responseBody.contains("id");
+//        responseBody.contains("state");
+//
+//       // System.out.println(responseBody);
+//    }
+    //TODO Add more Response Assertions
+    //State - Present etc
 }
 

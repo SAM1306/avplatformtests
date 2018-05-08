@@ -1,5 +1,5 @@
 
-package com.smartthings.avplatform.junit;
+package com.smartthings.avplatform.api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -143,8 +143,9 @@ public class Sources extends TestUtils {
 
     }
 }
-/*
-    @Ignore
+
+
+   /* @Ignore
     @Test
     public void getAXYZ(){
 
@@ -160,12 +161,5 @@ public class Sources extends TestUtils {
     public void getASourceInvalidSourceId(){
         //
     };
-
-*//*
-
-
-
-
-
-}
 */
+

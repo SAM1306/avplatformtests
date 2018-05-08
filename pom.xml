@@ -132,9 +132,15 @@
                 <dependencies>
                     <dependency>
                         <groupId>net.serenity-bdd</groupId>
+                        <artifactId>serenity-rest-assured</artifactId>
+                        <version>${serenity.version}</version>
+                    </dependency>
+                    <dependency>
+                        <groupId>net.serenity-bdd</groupId>
                         <artifactId>serenity-core</artifactId>
                         <version>${serenity.version}</version>
                     </dependency>
+
                 </dependencies>
                 <executions>
                     <execution>
@@ -142,7 +148,6 @@
                         <phase>post-integration-test</phase>
                         <goals>
                             <goal>aggregate</goal>
-
                         </goals>
                     </execution>
                 </executions>

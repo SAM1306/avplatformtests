@@ -1,6 +1,6 @@
 
 
-package com.smartthings.avplatform.junit;
+package com.smartthings.avplatform.api;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -12,6 +12,7 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -21,11 +22,11 @@ import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SerenityRunner.class)
 
-public class OtherTests {
+public class LiveStreamClipRecord {
 
     static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
     static String SourceId_1 = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
-    static String SourceId_2 = "03b7f6ec-a4b7-48cd-b560-ef09d62de60c";
+    static String SourceId_2 = "12630f5c-b852-4f7b-ac7c-bdd410b44b0f";
 
     static String offlineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
     static String InvalidUserToken = "aff6e157-bbe1";
@@ -237,7 +238,7 @@ public class OtherTests {
 
     }
 
-
+    @Ignore
     @Title("Request Live Stream, Record 10 Clips  on same camera")  //Same Camera
     @Test
     public void liveStreamMultipleClipRecordsSameCamera() throws InterruptedException {
@@ -310,7 +311,7 @@ public class OtherTests {
                     .log()
                     .all()
                     .statusCode(200);
-                    //.time(lessThan(ResponseTime));
+            //.time(lessThan(ResponseTime));
 
 
             System.out.println(+i+ "Clip State: " + state);

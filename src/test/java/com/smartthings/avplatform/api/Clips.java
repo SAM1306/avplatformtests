@@ -1,23 +1,21 @@
 
 
-package com.smartthings.avplatform.junit;
+package com.smartthings.avplatform.api;
 
-        import com.google.gson.Gson;
-        import com.google.gson.JsonElement;
-        import com.google.gson.JsonObject;
-        import com.google.gson.JsonParser;
-        import io.restassured.RestAssured;
-        import io.restassured.response.ValidatableResponse;
-        import net.serenitybdd.junit.runners.SerenityRunner;
-        import net.serenitybdd.rest.SerenityRest;
-        import net.thucydides.core.annotations.Title;
-        import org.junit.BeforeClass;
-        import org.junit.Test;
-        import org.junit.runner.RunWith;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import io.restassured.RestAssured;
+import io.restassured.response.ValidatableResponse;
+import net.serenitybdd.junit.runners.SerenityRunner;
+import net.serenitybdd.rest.SerenityRest;
+import net.thucydides.core.annotations.Title;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 
-        import javax.validation.constraints.AssertTrue;
-
-        import static org.hamcrest.Matchers.lessThan;
+import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SerenityRunner.class)
 public class Clips {
@@ -65,7 +63,7 @@ public class Clips {
         Thread.sleep(20000);
 
         String responseStr = response.extract().body().asString();
-      //  System.out.println(responseStr);
+        //  System.out.println(responseStr);
         Gson gson = new Gson(); //TODO Fix
         JsonParser jp = new JsonParser();
         JsonElement je = jp.parse(responseStr);
@@ -76,8 +74,8 @@ public class Clips {
         String clipID = clipObject.get("id").getAsString();
         System.out.println("ClipID: " + clipID);
 
-       //Get a Clip
-       SerenityRest.given()
+        //Get a Clip
+        SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .queryParam("source_id", SourceId)
@@ -89,6 +87,7 @@ public class Clips {
                 .all()
                 .statusCode(200)
                 .time(lessThan(ResponseTime));
+
 
         System.out.println("Clip details retrieved");
 
@@ -201,28 +200,22 @@ public class Clips {
                 .log()
                 .all()
                 .statusCode(201);
-                //.time(lessThan(ResponseTime));
-
+        //.time(lessThan(ResponseTime));
         System.out.println(" Clip Requested");
         Thread.sleep(20000);
 
-        String responseStr = response.extract().body().asString();
-        String clipResponseBody = response.extract().body().asString();
-        JsonParser jp2 = new JsonParser();
-        JsonElement je2 = jp2.parse(responseStr);
-        JsonObject clipResponseBodyObject = je2.getAsJsonObject();
-
-        //Store Clip Ids in Array List
-
-        JsonElement clip = clipResponseBodyObject.get("clip");
-        JsonObject clipObject = clip.getAsJsonObject();
-
-        String state = clipObject.get("state").getAsString();
-        System.out.println( "Clip State: " + state);
-        state.equals("present");
-
-
-           // System.out.println("Clip is present");
+        ValidatableResponse getClipResponse = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("application/x-www-form-urlencoded")
+                .queryParam("source_id", SourceId)
+                //      .queryParam("clip_id", clipID)
+                .when()
+                .get("/clip")
+                .then()
+                .log()
+                .all()
+                .statusCode(200)
+                .time(lessThan(ResponseTime));
 
 
 
@@ -249,42 +242,63 @@ public class Clips {
         // Clip Retention settings/default - 7 days
 
 
-/*   String responseStr = getResponse.extract().body().asString();
-        responseStr.contains("start");
-        Gson gson2 = new Gson();
-        JsonParser jp2 = new JsonParser();
-        JsonElement je2 = jp2.parse(responseStr);
-        JsonObject getResponseBodyObject = je2.getAsJsonObject();
-
-        JsonElement getClips = getResponseBodyObject.get("clips");
-        JsonObject getClipsObject = getClips.getAsJsonObject();
-        String start = getClipsObject.get("start").getAsString();
-        System.out.println("start: " + start);
-
-       */
-
-
     }
-    @Title("RetrieveAClip")
+
+    @Title("RetrieveAClip")  // Record a new clip and retrieve the clip using mediaURL
     @Test
-    public void retrieveAClip() {
+    public void retrieveAClip() throws InterruptedException {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
+                .contentType("application/x-www-form-urlencoded")
+                .param("source_id", SourceId)
+                .param("duration", 10)
                 .when()
-                .get("https://mediaserv.media12.ec2.st-av.net/image?source_id=17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3&image_id=yioPzdAxbNqhmzVOKCkVI")
+                .post("/clip/record")
                 .then()
                 .log()
                 .all()
-                .statusCode(200);
+                .statusCode(201);
+        //.time(lessThan(ResponseTime));
 
-        String responseBody = response.toString();
+        System.out.println(" Clip Requested");
+        Thread.sleep(20000);
 
-        responseBody.contains("ContentType");
-        boolean contentType = responseBody.contains("video/mp4");
+        String responseStr = response.extract().body().asString();
+        Gson gson = new Gson(); //TODO Fix
+        JsonParser jp = new JsonParser();
+        JsonElement je = jp.parse(responseStr);
+        JsonObject responseBodyObject = je.getAsJsonObject();
 
-        System.out.println(responseBody);
-              //.and().contentType("video/mp4");
-        //TODO Fix
+        JsonElement clip = responseBodyObject.get("clip");
+        JsonObject clipObject = clip.getAsJsonObject();
+        String clipID = clipObject.get("id").getAsString();
+        System.out.println("ClipID: " + clipID);
+
+        String mediaURL = clipObject.get("media_url").getAsString();
+        System.out.println( "Clip Media URL: " + mediaURL);
+
+        ValidatableResponse getResponse = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .when()
+                .get(mediaURL)
+                .then()
+                .log()
+                .all()
+                .statusCode(200).contentType("video/mp4");
+
+        String getResponseStr = getResponse.extract().body().asString();
+        Gson gson2 = new Gson();
+        JsonParser jp2 = new JsonParser();
+        JsonElement je2 = jp2.parse(getResponseStr);
+        JsonObject responseBodyObject2 = je2.getAsJsonObject();
+
+        JsonElement clip2 = responseBodyObject2.get("clip");
+        JsonObject clipObject2 = clip2.getAsJsonObject();
+
+        String state2 = clipObject2.get("state").getAsString();
+        System.out.println( "Clip State: " + state2);
+
+
     }
 
     @Title("Get Clip Images")
@@ -301,7 +315,7 @@ public class Clips {
                 .log()
                 .all()
                 .statusCode(200);
-                //.time(lessThan(ResponseTime));
+        //.time(lessThan(ResponseTime));
 
         System.out.println("Clip Images retrieved");
     }
@@ -366,7 +380,5 @@ public class Clips {
                 .time(lessThan(ResponseTime));
 
         System.out.println("Clip record requested with Invalid SourceId");
-
-
     }
 }

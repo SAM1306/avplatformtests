@@ -5,7 +5,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.smartthings.avplatform.utils.TestUtils;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
@@ -19,25 +18,7 @@ import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SerenityRunner.class)
-public class Sources extends TestUtils {
-
-
-    static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
-    static String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
-    static String OfflineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
-    static Long ResponseTime = 10000L;
-
-    static String SourceName = "Cam_" + TestUtils.getRandomValue();
-
-    String InvalidUserToken = "affbffcff";
-    String InvalidSourceId = "17c9f33d4c3";
-
-
-    @BeforeClass
-    public static void init() {
-
-        RestAssured.baseURI = "https://api.s.st-av.net/v1";
-    }
+public class Sources extends Properties {
 
     @Title("List all sources for the given user")
     @Test
@@ -51,6 +32,7 @@ public class Sources extends TestUtils {
                 .log()
                 .all()
                 .statusCode(200);
+
     }
 
     @Title("Get A Source By Id")
@@ -59,7 +41,7 @@ public class Sources extends TestUtils {
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/source")
                 .then()
@@ -75,7 +57,7 @@ public class Sources extends TestUtils {
         SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/source")
                 .then()
@@ -83,8 +65,6 @@ public class Sources extends TestUtils {
                 .all()
                 .statusCode(403);
     }
-
-    ;
 
     @Title("Get A Source with Invalid SourceId")
     @Test
@@ -99,7 +79,6 @@ public class Sources extends TestUtils {
                 .log()
                 .all()
                 .statusCode(404);
-
         //TODO Add response error message validation
     }
 
@@ -107,7 +86,6 @@ public class Sources extends TestUtils {
     @Title("Update A Source")
     @Test
     public void updateSource() {
-
 
         JSONObject jsonMap = new JSONObject();
         jsonMap.put("name", SourceName);
@@ -125,7 +103,7 @@ public class Sources extends TestUtils {
                 .statusCode(200)
                 .and().time(lessThan(ResponseTime));
 
-        String responseStr = updateResponse.extract().body().asString();
+       /* String responseStr = updateResponse.extract().body().asString();
 
         Gson gson = new Gson(); //TODO Fix
         JsonParser jp = new JsonParser();
@@ -134,6 +112,8 @@ public class Sources extends TestUtils {
 
         JsonElement source = responseBodyObject.get("source");
         JsonObject sourceObject = source.getAsJsonObject();
+*/
+        JsonObject sourceObject = getResponseObject(updateResponse, "source");
 
         String name = sourceObject.get("name").getAsString();
         System.out.println("Updated Name: " + name);

@@ -5,50 +5,29 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.smartthings.avplatform.utils.TestUtils;
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
-import jnr.ffi.annotations.IgnoreError;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
 import org.json.simple.JSONObject;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
-import java.util.UUID;
 
 import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SerenityRunner.class)
-public class Zones extends TestUtils{
-
-    static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
-    static String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
-    static String ZoneId = "Iwn7gQ4ZFY_BezmXPaLoZ";
-    static String InvalidZoneId = "xyz";
-    static String InvalidUserToken = "affbffcff";
-    static String InvalidSourceId = "17c9f33d4c3";
-    static Long ResponseTime = 10000L;
-    static String ZoneName = "Zone_" + TestUtils.getRandomValue();
-
-    @BeforeClass
-    public static void init() {
-        RestAssured.baseURI = "https://api.s.st-av.net/v1";
-    }
+public class Zones extends Properties{
 
     @Title("List all Zones for the given source")
     @Test
     public void getAllZones() {
         SerenityRest.given()
                 .auth().oauth2(UserToken)
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/zones")
                 .then()
@@ -63,7 +42,7 @@ public class Zones extends TestUtils{
     public void getAllZonesInvalidAuth() {
         SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/zones")
                 .then()
@@ -93,7 +72,7 @@ public class Zones extends TestUtils{
     public void getAZone() {
         SerenityRest.given()
                 .auth().oauth2(UserToken)
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("zone_id", ZoneId)
                 .when()
                 .get("/zone")
@@ -109,7 +88,7 @@ public class Zones extends TestUtils{
     public void getAZoneInvalidZoneId() {
         SerenityRest.given()
                 .auth().oauth2(UserToken)
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("zone_id", InvalidZoneId)
                 .when()
                 .get("/zone")
@@ -125,7 +104,7 @@ public class Zones extends TestUtils{
     public void getAZoneInvalidAuth() {
         SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("zone_id", InvalidZoneId)
                 .when()
                 .get("/zone")
@@ -189,7 +168,7 @@ public class Zones extends TestUtils{
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .body(jsonMap.toJSONString())
                 .when()
                 .post("/zone")
@@ -233,7 +212,7 @@ public class Zones extends TestUtils{
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .body(jsonMap.toJSONString())
                 .when()
                 .post("/zone")
@@ -254,7 +233,7 @@ public class Zones extends TestUtils{
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .body(jsonMap.toJSONString())
                 .when()
                 .post("/zone")
@@ -264,25 +243,6 @@ public class Zones extends TestUtils{
                 .statusCode(400)
                 .and().time(lessThan(ResponseTime));
     }
-
- /*//TODO Add Post a zone, get a Zone by Id, delete a Zone, get deleted Zone by ID
-    @Title("Get a Zones by ID")
-    @Test
-    public void getAZone() {
-        SerenityRest.given()
-                .auth().oauth2(UserToken)
-                .queryParam("source_id", SourceId)
-                .queryParam("zone_id",ZoneId)
-                .when()
-                .get("/zone")
-                .then()
-                .log()
-                .all()
-                .statusCode(200)
-                .and().time(lessThan(1000L));
-    }
-
-*/
 
     @Test
     public void postZoneGetZoneDeleteZoneGetDeletedZone() throws InterruptedException {
@@ -323,7 +283,7 @@ public class Zones extends TestUtils{
         ValidatableResponse createZone = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .body(jsonMap.toJSONString())
                 .when()
                 .post("/zone")
@@ -352,7 +312,7 @@ public class Zones extends TestUtils{
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("zone_id", zoneID)
                 .when()
                 .get("/zone")
@@ -367,7 +327,7 @@ public class Zones extends TestUtils{
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("zone_id", zoneID)
                 .when()
                 .delete("/zone")
@@ -380,6 +340,12 @@ public class Zones extends TestUtils{
         System.out.println("Zone deleted");
         //.and().time(lessThan(ResponseTime));
     }
+
+    //TODO Create a Zone(or take existing Zone, simulate motion within the zone, verify motion detected event,
+    //Check if motion detected record clip
+
+
+
 
 }
 

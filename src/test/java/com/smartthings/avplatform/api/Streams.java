@@ -1,6 +1,4 @@
 
-
-
 package com.smartthings.avplatform.api;
 
 import com.google.gson.Gson;
@@ -20,26 +18,7 @@ import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SerenityRunner.class)
 
-public class Streams {
-
-    static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
-    static String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
-    static String offlineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
-
-    static String InvalidUserToken = "aff6e157-bbe1";
-    static String InvalidSourceId = "1e3fa-4609-4c19-";
-
-    static Long ResponseTime = 10000L;
-
-    String mediaUrl = "";
-    static String StreamID = "HJKazo3THEPzx37zjuMlS";
-
-    @BeforeClass
-    public static void init() {
-
-        RestAssured.baseURI = "https://api.s.st-av.net/v1";
-    }
-
+public class Streams extends Properties {
 
     @Title("Request Live Stream")
     @Test
@@ -47,7 +26,7 @@ public class Streams {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .when()
                 .post("/stream")
                 .then()
@@ -88,25 +67,16 @@ public class Streams {
                 .log()
                 .all()
                 .time(lessThan(ResponseTime));
-
-
-
-
 /*   JsonElement eventLog = streamObject.get("event_log").getAsJsonArray();
         JsonObject eventObject = eventLog.getAsJsonObject();
         String name = eventObject.get("name").getAsString();
         System.out.println("Name : " + name);
    */
-
-
-
         String responseBody = response.toString();
-
         // Response Body Validation
         responseBody.contains("ContentType");
         responseBody.contains("Created");
         responseBody.contains("201");
-
         responseBody.contains("stream");
         responseBody.contains("user_id");
         responseBody.contains("event_log");
@@ -114,7 +84,6 @@ public class Streams {
         responseBody.contains("name");
         responseBody.contains("running");
         responseBody.contains("id");
-
         responseBody.contains("mode");
         responseBody.contains("profile");
         responseBody.contains("source_id");
@@ -130,27 +99,13 @@ public class Streams {
 
     }
 
-
-
-
-/*@Ignore
-    @Manual
-    @Title("View Live Stream using GStreamer")
-    @Test
-    public void viewStream() {
-
-    }
-*/
-
-
-
     @Title("Get Streams")
     @Test
     public void getStreams () {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 //    .contentType("application/x-www-form-urlencoded")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/streams")
                 .then()
@@ -160,7 +115,6 @@ public class Streams {
                 .time(lessThan(ResponseTime));
 
         String responseBody = response.toString();
-
         // Response Body Validation
         responseBody.contains("ContentType");
         responseBody.contains("OK");
@@ -173,7 +127,7 @@ public class Streams {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .queryParam("stream_id", StreamID)       //Declared constant
+                .queryParam("stream_id", StreamID)
                 .when()
                 .get("/stream")
                 .then()
@@ -196,7 +150,7 @@ public class Streams {
     public void deleteAStream () {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .delete("/stream")
                 .then()
@@ -221,7 +175,7 @@ public class Streams {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .when()
                 .post("/stream")
                 .then()
@@ -272,7 +226,7 @@ public class Streams {
 
         SerenityRest.given()
                 .auth().oauth2(UserToken)
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .delete("/stream")
                 .then()
@@ -299,10 +253,7 @@ public class Streams {
         //.time(lessThan(ResponseTime));
 
         System.out.println("Attempted to retrieve deleted Stream details");
-
-
     }
-
 
     @Title("Request Live Stream when Camera is Offline")
     @Test
@@ -320,7 +271,6 @@ public class Streams {
                 .time(lessThan(ResponseTime));
 
         String responseStr = response.extract().body().asString();
-
         responseStr.contains("source: ec31e3fa-4609-4c19-9263-000446729196 is offline");
     }
 
@@ -340,7 +290,6 @@ public class Streams {
                 .time(lessThan(ResponseTime));
 
         String responseStr = response.extract().body().asString();
-
     }
 
     @Title("Request Live Stream with Invalid SourceId")

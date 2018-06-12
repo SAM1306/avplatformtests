@@ -6,48 +6,27 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SerenityRunner.class)
-public class Clips {
-
-    static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
-    static String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
-    static String offlineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
-    static String ClipID = "5s1RY18-sWq6gipY8i60J";
-    static String InvalidClipID = "2f4nKNN0VlW9qURJ";
-
-    static String InvalidUserToken = "affbffcff";
-    static String InvalidSourceId = "17c9f33d4c3";
-    static Long ResponseTime = 10000L;
-
-
-
-    @BeforeClass
-    public static void init() {
-
-        RestAssured.baseURI = "https://api.s.st-av.net/v1";
-    }
-
+public class Clips extends Properties {
 
     @Title("Request Clip Record, Get a Clip by Id, Delete a clip and Get Deleted clip")
     @Test
     public void postClipGetClipDeleteClipGetDeletedClip() throws InterruptedException {
-
         //Record
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .param("duration", 20)
                 .when()
                 .post("/clip/record")
@@ -62,23 +41,20 @@ public class Clips {
         //Alternate way to be added
         Thread.sleep(20000);
 
-        String responseStr = response.extract().body().asString();
-        //  System.out.println(responseStr);
-        Gson gson = new Gson(); //TODO Fix
-        JsonParser jp = new JsonParser();
-        JsonElement je = jp.parse(responseStr);
-        JsonObject responseBodyObject = je.getAsJsonObject();
+        String actualState = getCurrentStateOfClip(response);
+        System.out.println("Actual State of clip : " +actualState);
+        String expectedState = "present";
+        assertThat(actualState.equalsIgnoreCase(expectedState));
+        System.out.println("Clip record is successful");
 
-        JsonElement clip = responseBodyObject.get("clip");
-        JsonObject clipObject = clip.getAsJsonObject();
-        String clipID = clipObject.get("id").getAsString();
+        String clipID = getId(response,"clip");
         System.out.println("ClipID: " + clipID);
 
         //Get a Clip
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("clip_id", clipID)
                 .when()
                 .get("/clip")
@@ -88,13 +64,12 @@ public class Clips {
                 .statusCode(200)
                 .time(lessThan(ResponseTime));
 
-
         System.out.println("Clip details retrieved");
 
         //Delete a Clip
         SerenityRest.given()
                 .auth().oauth2(UserToken)
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("clip_id", clipID)
                 .when()
                 .delete("/clip")
@@ -105,7 +80,6 @@ public class Clips {
                 .time(lessThan(ResponseTime));
 
         System.out.println("Clip Deleted");
-
     }
 
     @Title("Get a Clip with InvalidAuth")
@@ -114,7 +88,7 @@ public class Clips {
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("clip_id", ClipID)
                 .when()
                 .get("/clip")
@@ -133,7 +107,7 @@ public class Clips {
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("clip_id", InvalidClipID)
                 .when()
                 .get("/clip")
@@ -152,7 +126,7 @@ public class Clips {
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/clip")
                 .then()
@@ -170,7 +144,7 @@ public class Clips {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .param("duration", 121)
                 .when()
                 .post("/clip/record")
@@ -181,7 +155,6 @@ public class Clips {
                 .time(lessThan(ResponseTime));
 
         System.out.println("Lengthy Clip Requested");
-
         String responseStr = response.extract().body().asString();
         responseStr.contains("Duration must be between 10 and 120 seconds");
     }
@@ -192,7 +165,7 @@ public class Clips {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .param("duration", 10)
                 .when()
                 .post("/clip/record")
@@ -207,7 +180,7 @@ public class Clips {
         ValidatableResponse getClipResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 //      .queryParam("clip_id", clipID)
                 .when()
                 .get("/clip")
@@ -216,17 +189,15 @@ public class Clips {
                 .all()
                 .statusCode(200)
                 .time(lessThan(ResponseTime));
-
-
-
     }
+
     @Title("List All Clips")
     @Test
     public void getClips() {
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/clips")
                 .then()
@@ -236,12 +207,8 @@ public class Clips {
                 .time(lessThan(ResponseTime));
 
         System.out.println("List of all clips is retrieved");
-
-
         //TODO Add "start time validation". Get "start" into array and validate it is not more than
         // Clip Retention settings/default - 7 days
-
-
     }
 
     @Title("RetrieveAClip")  // Record a new clip and retrieve the clip using mediaURL
@@ -250,7 +217,7 @@ public class Clips {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .param("duration", 10)
                 .when()
                 .post("/clip/record")
@@ -263,19 +230,11 @@ public class Clips {
         System.out.println(" Clip Requested");
         Thread.sleep(20000);
 
-        String responseStr = response.extract().body().asString();
-        Gson gson = new Gson(); //TODO Fix
-        JsonParser jp = new JsonParser();
-        JsonElement je = jp.parse(responseStr);
-        JsonObject responseBodyObject = je.getAsJsonObject();
-
-        JsonElement clip = responseBodyObject.get("clip");
-        JsonObject clipObject = clip.getAsJsonObject();
-        String clipID = clipObject.get("id").getAsString();
+        String clipID = getId(response,"clip");
         System.out.println("ClipID: " + clipID);
 
-        String mediaURL = clipObject.get("media_url").getAsString();
-        System.out.println( "Clip Media URL: " + mediaURL);
+        String mediaURL = getMediaURL(response,"clip");
+        System.out.println("Clip Media URL: " + mediaURL);
 
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
@@ -286,19 +245,8 @@ public class Clips {
                 .all()
                 .statusCode(200).contentType("video/mp4");
 
-        String getResponseStr = getResponse.extract().body().asString();
-        Gson gson2 = new Gson();
-        JsonParser jp2 = new JsonParser();
-        JsonElement je2 = jp2.parse(getResponseStr);
-        JsonObject responseBodyObject2 = je2.getAsJsonObject();
-
-        JsonElement clip2 = responseBodyObject2.get("clip");
-        JsonObject clipObject2 = clip2.getAsJsonObject();
-
-        String state2 = clipObject2.get("state").getAsString();
-        System.out.println( "Clip State: " + state2);
-
-
+        String state = getCurrentState(getResponse,"clip");
+        System.out.println("Clip State: " + state);
     }
 
     @Title("Get Clip Images")
@@ -307,7 +255,7 @@ public class Clips {
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("clip_id", ClipID)
                 .when()
                 .get("/clip")
@@ -315,8 +263,6 @@ public class Clips {
                 .log()
                 .all()
                 .statusCode(200);
-        //.time(lessThan(ResponseTime));
-
         System.out.println("Clip Images retrieved");
     }
 
@@ -348,7 +294,7 @@ public class Clips {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .param("duration", 20)
                 .when()
                 .post("/clip/record")
@@ -359,8 +305,6 @@ public class Clips {
                 .time(lessThan(ResponseTime));
 
         System.out.println("Clip record requested with Invalid Auth");
-
-
     }
 
     @Title("Request Clip Record - Invalid SourceId")
@@ -381,4 +325,89 @@ public class Clips {
 
         System.out.println("Clip record requested with Invalid SourceId");
     }
-}
+
+    @Title("Request to record a Clip before the earlier request is completed")
+    @Test
+    public void postClipRequest() {
+       ValidatableResponse response = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("application/x-www-form-urlencoded")
+                .param("source_id", SourceId_1)
+                .param("duration", 20)
+                .when()
+                .post("/clip/record")
+                .then()
+                .log()
+                .all()
+                .statusCode(201);
+
+        System.out.println("Clip 1 record requested");
+
+        String clipState = getCurrentState(response,"clip");
+        System.out.println("Clip State: " + clipState);
+
+        String expectedState = "pending";
+        assertThat(clipState.equalsIgnoreCase(expectedState));
+         ValidatableResponse response2 = SerenityRest.given()
+                    .auth().oauth2(UserToken)
+                    .contentType("application/x-www-form-urlencoded")
+                    .param("source_id", SourceId_1)
+                    .param("duration", 20)
+                    .when()
+                    .post("/clip/record")
+                    .then()
+                    .log()
+                    .all()
+                    .statusCode(403);
+        }
+
+    @Title("Record 10 clips and verify if they are recorded successfully")
+    @Test
+    public void postClipsRecord() throws InterruptedException {
+
+        for (int k = 1; k <= 10; k++) {
+            ValidatableResponse response = SerenityRest.given()
+                    .auth().oauth2(UserToken)
+                    .contentType("application/x-www-form-urlencoded")
+                    .param("source_id", SourceId_1)
+                    .param("duration", 10)
+                    .when()
+                    .post("/clip/record")
+                    .then()
+                    .log()
+                    .all()
+                    .statusCode(201);
+
+            System.out.println("Clip " +k+ " requested");
+
+            String actualState1 = getCurrentStateOfClip(response);
+            System.out.println("Actual State of clip : " +actualState1);
+            String expectedState1 = "pending";
+            assertThat(actualState1.equalsIgnoreCase(expectedState1));
+          //  System.out.println("Clip " +k+ " record requested");
+
+            Thread.sleep(20000);
+
+            ValidatableResponse getClipResponse = SerenityRest.given()
+                    .auth().oauth2(UserToken)
+                    .contentType("application/x-www-form-urlencoded")
+                    .queryParam("source_id", SourceId_1)
+                    .when()
+                    .get("/clip")
+                    .then()
+                    .log()
+                    .all()
+                    .statusCode(200);
+
+           String actualState2 = getCurrentStateOfClip(getClipResponse);
+           System.out.println("Actual State of clip : " +actualState2);
+           String expectedState2 = "present";
+           assertThat(actualState2.equalsIgnoreCase(expectedState2));
+           System.out.println("Clip " +k+ " recorded");
+
+        }
+
+    }
+
+    }
+

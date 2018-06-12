@@ -20,43 +20,16 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasValue;
 import static org.hamcrest.Matchers.lessThan;
 
+import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SerenityRunner.class)
-public class Images{
-
-
-    static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
-    static String SourceId = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
-    static String SourceId2 = "15f53d51-2ec0-4535-b28d-ec50f16cf6e0";
-    static String offlineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
-    static String ImageId ="SZ-pKIbYS4oMDgKc0Y2nI";
-    static String ImageMediaURL= "https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
-
-    static String InvalidImageMediaURL ="https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cb6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
-    static String InvalidImageId ="SZ-pKIbYSKc0Y2nI";
-
-    static String ContentType="application/x-www-form-urlencoded";
-    static Long ResponseTime = 10000L;
-
-    String InvalidUserToken = "affbffcff";
-    String InvalidSourceId = "17c9f33d4c3";
-
-    // @Steps
-    // SerenitySteps steps;
-
-
-    @BeforeClass
-    public static void init() {
-        RestAssured.baseURI = "https://api.s.st-av.net/v1";
-    }
+public class Images extends Properties{
 
     @Title("List all Images for the given source")
     @Test
     public void getAllImages() {
-        SerenityRest.given()
-                .auth().oauth2(UserToken)
-                .contentType("image/jpeg")
-                .queryParam("source_id", SourceId)
+        SerenityRest.given().auth().oauth2(UserToken).contentType("image/jpeg")
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/images")
                 .then()
@@ -86,7 +59,7 @@ public class Images{
         SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
                 .contentType("image/jpeg")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/images")
                 .then()
@@ -101,24 +74,15 @@ public class Images{
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .when()
                 .post("/image/record")
                 .then()
                 .log()
                 .all()
                 .statusCode(201);
-        //.and().time(lessThan(ResponseTime));
 
-        String responseStr = response.extract().body().asString();
-        Gson gson = new Gson();
-        JsonParser jp = new JsonParser();
-        JsonElement je = jp.parse(responseStr);
-        JsonObject responseBodyObject = je.getAsJsonObject();
-
-        JsonElement image = responseBodyObject.get("image");
-        JsonObject imageObject = image.getAsJsonObject();
-        String imageID = imageObject.get("id").getAsString();
+        String imageID = getId(response,"image");
 
         System.out.println("Image record requested");
         System.out.println("ImageID: " + imageID);
@@ -128,7 +92,7 @@ public class Images{
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("image_id",imageID)
                 .when()
                 .get("/image")
@@ -136,7 +100,6 @@ public class Images{
                 .log()
                 .all()
                 .statusCode(200)
-                // .extract()//Response status code
                 .statusLine("HTTP/1.1 200 OK")          //Status Line
                 .contentType("application/json");
 
@@ -144,7 +107,7 @@ public class Images{
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
                 .when()
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("image_id",imageID)
                 .delete("/image")
                 .then()
@@ -155,7 +118,7 @@ public class Images{
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("image_id",imageID)
                 .when()
                 .get("/image")
@@ -167,32 +130,27 @@ public class Images{
         System.out.println("Image deleted");
     }
 
-    @Title("GetAnImage") // Retrieves details of most recent recorded image
+    @Title("GetAnImage")// Retrieves details of most recent recorded image
     @Test
     public void getAnImage() {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/image")
                 .then()
                 .log()
                 .all()
                 .statusCode(200)
-                // .extract()//Response status code
-                .statusLine("HTTP/1.1 200 OK")          //Status Line
+                .statusLine("HTTP/1.1 200 OK")
                 .contentType("application/json");
-        //Header
-
-        // String responseString = response.extract().toString();
-        // System.out.println(responseString);
 
         ValidatableResponse response2 = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
-                .queryParam("source_id", SourceId)
-                //   .queryParam("image_id", ImageId)
+                .queryParam("source_id", SourceId_1)
+                //   .queryParam("image_id", ImageId)imageObject.get("media_url").getAsString(
                 .when()
                 .get("/image")
                 .then()
@@ -204,20 +162,9 @@ public class Images{
                 .contentType("application/json");
         //.assertThat().content("state", equalTo("present"));
 
-        String responseStr = response.extract().body().asString();
 
-        //System.out.println("printing response: "+responseStr);
-
-        Gson gson = new Gson();
-        JsonParser jp = new JsonParser();
-        JsonElement je = jp.parse(responseStr);
-        JsonObject responseBodyObject = je.getAsJsonObject();
-
-        JsonElement image = responseBodyObject.get("image");
-        JsonObject imageObject = image.getAsJsonObject();
-        String mediaUrl = imageObject.get("media_url").getAsString();
+        String mediaUrl = getMediaURL(response2,"image");
         System.out.println("media_url: " + mediaUrl);
-
 
         String responseBody = response.toString();
 
@@ -244,7 +191,7 @@ public class Images{
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("image_id", ImageId)
                 .when()
                 .get("/image")
@@ -265,7 +212,7 @@ public class Images{
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
                 .contentType("image/jpeg")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .when()
                 .get("/image")
                 .then()
@@ -297,7 +244,7 @@ public class Images{
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("image_id", InvalidImageId)
                 .when()
                 .get("/image")
@@ -307,14 +254,13 @@ public class Images{
                 .statusCode(404);
     }
 
-
     @Title("Record Image")
     @Test
     public void postImageRecord() {
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .when()
                 .post("/image/record")
                 .then()
@@ -344,7 +290,7 @@ public class Images{
         SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .when()
                 .post("/image/record")
                 .then()
@@ -378,7 +324,7 @@ public class Images{
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .when()
                 .post("/image/record")
                 .then()
@@ -388,17 +334,7 @@ public class Images{
         //.and().time(lessThan(ResponseTime));
 
         Thread.sleep(5000);
-        String responseStr = response.extract().body().asString();
-
-        Gson gson = new Gson(); //TODO Fix
-        JsonParser jp = new JsonParser();
-        JsonElement je = jp.parse(responseStr);
-        JsonObject responseBodyObject = je.getAsJsonObject();
-
-        JsonElement image = responseBodyObject.get("image");
-        JsonObject imageObject = image.getAsJsonObject();
-
-        String mediaURL = imageObject.get("media_url").getAsString();
+       String mediaURL =getImageMediaURL(response);
         System.out.println("Image MediaURL: " + mediaURL);
 
         ValidatableResponse getResponse = SerenityRest.given()
@@ -433,7 +369,7 @@ public class Images{
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
-                .param("source_id", SourceId)
+                .param("source_id", SourceId_1)
                 .when()
                 .post("/image/record")
                 .then()
@@ -443,20 +379,8 @@ public class Images{
                 .contentType("application/json");
         // and().time(lessThan(1000L));
 
-        String responseStr = response.extract().body().asString();
-
-        Gson gson = new Gson(); //TODO Fix
-        JsonParser jp = new JsonParser();
-        JsonElement je = jp.parse(responseStr);
-        JsonObject responseBodyObject = je.getAsJsonObject();
-
-        JsonElement image = responseBodyObject.get("image");
-        JsonObject imageObject = image.getAsJsonObject();
-
-        String imageId = imageObject.get("id").getAsString();
+        String imageId = getId(response,"image");
         System.out.println("Image Id: " + imageId);
-
-
 
         Thread.sleep(2000);
 
@@ -464,7 +388,7 @@ public class Images{
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
                 .when()
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("image_id",InvalidImageId)
                 .delete("/image")
                 .then()
@@ -498,7 +422,7 @@ public class Images{
                 .auth().oauth2(InvalidUserToken)
                 .contentType("image/jpeg")
                 .when()
-                .queryParam("source_id", SourceId)
+                .queryParam("source_id", SourceId_1)
                 .queryParam("image_id",ImageId)
                 .delete("/image")
                 .then()
@@ -545,5 +469,77 @@ public class Images{
 //    }
     //TODO Add more Response Assertions
     //State - Present etc
+
+
+    //Calling Methods
+    @Title("RetrieveAnImage validate ResponseBody") // First Record and then pass mediaURL to retrieve
+    @Test
+    public void retrieveAnImageResponseFieldValidation() throws InterruptedException {
+
+        ValidatableResponse response = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("application/x-www-form-urlencoded")
+                .param("source_id", SourceId_1)
+                .when()
+                .post("/image/record")
+                .then()
+                .log()
+                .all()
+                .statusCode(201);
+
+        Thread.sleep(5000);
+
+        String imageId = getImageId(response);
+        System.out.println("Image Id: " + imageId);
+
+        ValidatableResponse getResponse = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .when()
+                .contentType("image/jpeg")
+                .queryParam("source_id", SourceId_1)
+                .queryParam("image_id", imageId)
+                .when()
+                .get("/image")
+                .then()
+                .log()
+                .all()
+                .statusCode(200);
+
+        String responseString = getResponseAsString(getResponse);
+
+        assertThat(responseString.contains("id"));
+        System.out.println("Response contains Image Id");
+        assertThat(responseString.contains("media_url"));
+        System.out.println("Response contains MediaURL");
+        assertThat(responseString.contains("expires_at"));
+        System.out.println("Response contains Image Expiration Date");
+        assertThat(responseString.contains("clip_id"));
+        System.out.println("Response contains clip_id");
+        assertThat(responseString.contains("state"));
+        System.out.println("Response contains Clip State");
+    }
+
+    @Title("Retrieve the most recent image")
+    @Test
+    public void retrieveAnImageInvalidSourceId() {
+        ValidatableResponse response = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("image/jpeg")
+                .queryParam("source_id", SourceId_1)
+                .when()
+                .get("/image")
+                .then()
+                .log()
+                .all()
+                .statusCode(200);
+
+       String imageId = getId(response,"image");
+       System.out.println("Image Id is " +imageId);
+
+       String imageURL = getMediaURL(response, "image");
+       System.out.println("Image URL is " +imageURL);
+
+    }
+
 }
 

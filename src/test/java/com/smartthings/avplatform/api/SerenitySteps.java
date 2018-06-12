@@ -1,9 +1,9 @@
 package com.smartthings.avplatform.api;
 
-        import com.smartthings.avplatform.testbase.TestBase;
-        import io.restassured.response.ValidatableResponse;
-        import net.serenitybdd.rest.SerenityRest;
-        import net.thucydides.core.annotations.Step;
+import com.smartthings.avplatform.testbase.TestBase;
+import io.restassured.response.ValidatableResponse;
+import net.serenitybdd.rest.SerenityRest;
+import net.thucydides.core.annotations.Step;
 
 public class SerenitySteps extends TestBase {
 

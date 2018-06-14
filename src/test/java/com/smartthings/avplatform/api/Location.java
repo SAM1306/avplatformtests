@@ -1,4 +1,3 @@
-/*
 package com.smartthings.avplatform.api;
 
 
@@ -10,7 +9,10 @@ import org.junit.Test;
 
 public class Location extends Properties{
 
-    @Title("Record Image with ReusableMethods and Steps")
+
+    //TODO Add Get Location, Patch Location
+
+   /* @Title("Record Image with ReusableMethods and Steps")
     @Test
     public void postImageRecordSteps() {
   ValidatableResponse response = steps.recordImage(UserToken,ContentType,SourceId2)
@@ -58,7 +60,6 @@ public class Location extends Properties{
         responseBody.contains("state");
 
        // System.out.println(responseBody);
-    }
+    }*/
 
 }
-*/

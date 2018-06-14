@@ -10,6 +10,7 @@ import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -19,6 +20,7 @@ import static org.hamcrest.Matchers.lessThan;
 @RunWith(SerenityRunner.class)
 public class Clips extends Properties {
 
+    @Ignore
     @Title("Request Clip Record, Get a Clip by Id, Delete a clip and Get Deleted clip")
     @Test
     public void postClipGetClipDeleteClipGetDeletedClip() throws InterruptedException {
@@ -159,6 +161,7 @@ public class Clips extends Properties {
         responseStr.contains("Duration must be between 10 and 120 seconds");
     }
 
+    @Ignore
     @Title("Request Clip Record duration=120sec")
     @Test
     public void postClipMaxDuration() throws InterruptedException {
@@ -211,6 +214,7 @@ public class Clips extends Properties {
         // Clip Retention settings/default - 7 days
     }
 
+    @Ignore
     @Title("RetrieveAClip")  // Record a new clip and retrieve the clip using mediaURL
     @Test
     public void retrieveAClip() throws InterruptedException {
@@ -249,6 +253,7 @@ public class Clips extends Properties {
         System.out.println("Clip State: " + state);
     }
 
+    @Ignore
     @Title("Get Clip Images")
     @Test
     public void getClipImages() {
@@ -361,6 +366,7 @@ public class Clips extends Properties {
                     .statusCode(403);
         }
 
+    @Ignore
     @Title("Record 10 clips and verify if they are recorded successfully")
     @Test
     public void postClipsRecord() throws InterruptedException {

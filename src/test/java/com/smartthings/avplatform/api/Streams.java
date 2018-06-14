@@ -11,6 +11,7 @@ import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -121,6 +122,7 @@ public class Streams extends Properties {
         responseBody.contains("200");
     }
 
+    @Ignore
     @Title("Get a Stream by ID")
     @Test
     public void getAStream () {
@@ -145,6 +147,7 @@ public class Streams extends Properties {
     }
 
 
+    @Ignore
     @Title("Delete a Stream by ID")
     @Test
     public void deleteAStream () {

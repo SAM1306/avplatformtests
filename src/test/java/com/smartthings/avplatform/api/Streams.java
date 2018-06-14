@@ -146,7 +146,6 @@ public class Streams extends Properties {
         responseBody.contains("200");
     }
 
-
     @Ignore
     @Title("Delete a Stream by ID")
     @Test

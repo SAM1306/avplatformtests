@@ -302,8 +302,6 @@ public class LiveStreamClipRecord extends Properties {
 
         }
 
-
-
 //TODO Fix Clip is not present ??
         System.out.println("Running: " + running);
         running.equals("false");

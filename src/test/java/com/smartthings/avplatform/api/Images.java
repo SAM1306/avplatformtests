@@ -291,7 +291,6 @@ public class Images extends Properties{
                 .log()
                 .all()
                 .statusCode(403);
-        //.and().time(lessThan(ResponseTime));
     }
 
     @Title("Record Image Invalid SourceId")
@@ -307,7 +306,6 @@ public class Images extends Properties{
                 .log()
                 .all()
                 .statusCode(404);
-                //.and().time(lessThan(ResponseTime));
     }
 
     @Title("RetrieveAnImage") // First Record and then pass mediaURL to retrieve

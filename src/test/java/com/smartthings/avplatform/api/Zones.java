@@ -131,8 +131,6 @@ public class Zones extends Properties{
                 .and().time(lessThan(ResponseTime));
     }
 
-
-    //TODO Send Coordinates
     @Ignore
     @Title("Create a Zone")
     @Test
@@ -179,7 +177,7 @@ public class Zones extends Properties{
                 .and().time(lessThan(ResponseTime));
     }
 
-    @Title("Create a Zone without Zone Name")     //To be succesfull as name is optional
+    @Title("Create a Zone without Zone Name")
     @Test
     public void postZoneWithoutZoneName() {
 
@@ -223,7 +221,7 @@ public class Zones extends Properties{
                 .and().time(lessThan(ResponseTime));
     }
 
-    @Title("Create a Zone without Zone Coordinates")     //To be succesfull as name is optional
+    @Title("Create a Zone without Zone Coordinates")
     @Test
     public void postZoneWithoutZoneCoordinates() {
 
@@ -246,7 +244,6 @@ public class Zones extends Properties{
 
     @Test
     public void postZoneGetZoneDeleteZoneGetDeletedZone() throws InterruptedException {
-
 
         Gson gson = new Gson();
         // Converting multidimensional array into JSON
@@ -295,11 +292,9 @@ public class Zones extends Properties{
         System.out.println("XXXXXXXXXXXXXXXXXXXXXX");
         System.out.println("Zone Created Succesfully");
 
-        //Alternate way to be added
         Thread.sleep(20000);
 
         String responseStr = createZone.extract().body().asString();
-        //Gson gsonZone = new Gson(); //TODO Fix
         JsonParser jp = new JsonParser();
         JsonElement je = jp.parse(responseStr);
         JsonObject responseBodyObject = je.getAsJsonObject();

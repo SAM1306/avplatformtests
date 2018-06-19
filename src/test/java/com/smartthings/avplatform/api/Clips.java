@@ -10,26 +10,29 @@ import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
+import org.junit.FixMethodOrder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
+import org.junit.runners.MethodSorters;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.lessThan;
 
+
 @RunWith(SerenityRunner.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Clips extends Properties {
 
-    @Ignore
     @Title("Request Clip Record, Get a Clip by Id, Delete a clip and Get Deleted clip")
     @Test
-    public void postClipGetClipDeleteClipGetDeletedClip() throws InterruptedException {
-        //Record
+    public void _01postClipGetClipDeleteClipGetDeletedClip() throws InterruptedException {
+
+        //Record a clip
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .param("source_id", SourceId_1)
-                .param("duration", 20)
+                .param("duration", 10)
                 .when()
                 .post("/clip/record")
                 .then()
@@ -40,7 +43,6 @@ public class Clips extends Properties {
 
         System.out.println("Clip Record Requested");
 
-        //Alternate way to be added
         Thread.sleep(20000);
 
         String actualState = getCurrentStateOfClip(response);
@@ -82,11 +84,28 @@ public class Clips extends Properties {
                 .time(lessThan(ResponseTime));
 
         System.out.println("Clip Deleted");
+
+        //Get Deleted Clip
+        SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("application/x-www-form-urlencoded")
+                .queryParam("source_id", SourceId_1)
+                .queryParam("clip_id", clipID)
+                .when()
+                .get("/clip")
+                .then()
+                .log()
+                .all()
+                .statusCode(404)
+                .time(lessThan(ResponseTime));
+
+        System.out.println("Clip not found");
+
     }
 
     @Title("Get a Clip with InvalidAuth")
     @Test
-    public void getClipInvalidAuth() {
+    public void _02getClipInvalidAuth() {
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -105,7 +124,7 @@ public class Clips extends Properties {
 
     @Title("Get a Clip by  InvalidClipId")
     @Test
-    public void getClipInvalidClipId() {
+    public void _03getClipInvalidClipId() {
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -124,7 +143,7 @@ public class Clips extends Properties {
 
     @Title("Get a Clip without ClipId")  //ClipId is optional
     @Test
-    public void getClipWithoutClipId() {
+    public void _04getClipWithoutClipId() {
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -142,7 +161,7 @@ public class Clips extends Properties {
 
     @Title("Request Clip Record duration>120sec")
     @Test
-    public void postClipLongDuration() {
+    public void _05postClipLongDuration() {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -161,10 +180,9 @@ public class Clips extends Properties {
         responseStr.contains("Duration must be between 10 and 120 seconds");
     }
 
-    @Ignore
     @Title("Request Clip Record duration=120sec")
     @Test
-    public void postClipMaxDuration() throws InterruptedException {
+    public void _06postClipMaxDuration() throws InterruptedException {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -196,7 +214,7 @@ public class Clips extends Properties {
 
     @Title("List All Clips")
     @Test
-    public void getClips() {
+    public void _07getClips() {
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -210,14 +228,11 @@ public class Clips extends Properties {
                 .time(lessThan(ResponseTime));
 
         System.out.println("List of all clips is retrieved");
-        //TODO Add "start time validation". Get "start" into array and validate it is not more than
-        // Clip Retention settings/default - 7 days
     }
 
-    @Ignore
     @Title("RetrieveAClip")  // Record a new clip and retrieve the clip using mediaURL
     @Test
-    public void retrieveAClip() throws InterruptedException {
+    public void _08retrieveAClip() throws InterruptedException {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -229,7 +244,6 @@ public class Clips extends Properties {
                 .log()
                 .all()
                 .statusCode(201);
-        //.time(lessThan(ResponseTime));
 
         System.out.println(" Clip Requested");
         Thread.sleep(20000);
@@ -248,20 +262,35 @@ public class Clips extends Properties {
                 .log()
                 .all()
                 .statusCode(200).contentType("video/mp4");
-
-        String state = getCurrentState(getResponse,"clip");
-        System.out.println("Clip State: " + state);
     }
 
-    @Ignore
     @Title("Get Clip Images")
     @Test
-    public void getClipImages() {
+    public void _09getClipImages() throws InterruptedException {
+
+        ValidatableResponse response = SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("application/x-www-form-urlencoded")
+                .param("source_id", SourceId_1)
+                .param("duration", 10)
+                .when()
+                .post("/clip/record")
+                .then()
+                .log()
+                .all()
+                .statusCode(201);
+
+        System.out.println(" Clip Requested");
+        Thread.sleep(20000);
+
+        String clipID = getId(response,"clip");
+        System.out.println("ClipID: " + clipID);
+
         ValidatableResponse getResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .queryParam("source_id", SourceId_1)
-                .queryParam("clip_id", ClipID)
+                .queryParam("clip_id", clipID)
                 .when()
                 .get("/clip")
                 .then()
@@ -273,7 +302,7 @@ public class Clips extends Properties {
 
     @Title("Request Clip Record - Camera Offline")
     @Test
-    public void postClipCameraOffline() {
+    public void _10postClipCameraOffline() {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -295,7 +324,7 @@ public class Clips extends Properties {
 
     @Title("Request Clip Record - Invalid UserToken")
     @Test
-    public void postClipInvalidAuth() {
+    public void _11postClipInvalidAuth() {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(InvalidUserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -314,7 +343,7 @@ public class Clips extends Properties {
 
     @Title("Request Clip Record - Invalid SourceId")
     @Test
-    public void postClipInvalidSourceId() {
+    public void _12postClipInvalidSourceId() {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -333,12 +362,12 @@ public class Clips extends Properties {
 
     @Title("Request to record a Clip before the earlier request is completed")
     @Test
-    public void postClipRequest() {
+    public void _13postClipRequest() throws InterruptedException {
        ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .param("source_id", SourceId_1)
-                .param("duration", 20)
+                .param("duration", 10)
                 .when()
                 .post("/clip/record")
                 .then()
@@ -364,12 +393,12 @@ public class Clips extends Properties {
                     .log()
                     .all()
                     .statusCode(403);
+         Thread.sleep(20000); //To let the previous request complete before running next Clip Record Request
         }
 
-    @Ignore
     @Title("Record 10 clips and verify if they are recorded successfully")
     @Test
-    public void postClipsRecord() throws InterruptedException {
+    public void _14postClipsRecord() throws InterruptedException {
 
         for (int k = 1; k <= 10; k++) {
             ValidatableResponse response = SerenityRest.given()
@@ -390,9 +419,7 @@ public class Clips extends Properties {
             System.out.println("Actual State of clip : " +actualState1);
             String expectedState1 = "pending";
             assertThat(actualState1.equalsIgnoreCase(expectedState1));
-          //  System.out.println("Clip " +k+ " record requested");
-
-            Thread.sleep(20000);
+            Thread.sleep(25000);
 
             ValidatableResponse getClipResponse = SerenityRest.given()
                     .auth().oauth2(UserToken)
@@ -410,7 +437,6 @@ public class Clips extends Properties {
            String expectedState2 = "present";
            assertThat(actualState2.equalsIgnoreCase(expectedState2));
            System.out.println("Clip " +k+ " recorded");
-
         }
 
     }

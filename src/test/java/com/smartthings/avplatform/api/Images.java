@@ -150,18 +150,14 @@ public class Images extends Properties{
                 .auth().oauth2(UserToken)
                 .contentType("image/jpeg")
                 .queryParam("source_id", SourceId_1)
-                //   .queryParam("image_id", ImageId)imageObject.get("media_url").getAsString(
                 .when()
                 .get("/image")
                 .then()
                 .log()
                 .all()
                 .statusCode(200)
-                // .extract()//Response status code
                 .statusLine("HTTP/1.1 200 OK")          //Status Line
                 .contentType("application/json");
-        //.assertThat().content("state", equalTo("present"));
-
 
         String mediaUrl = getMediaURL(response2,"image");
         System.out.println("media_url: " + mediaUrl);
@@ -234,9 +230,7 @@ public class Images extends Properties{
                 .log()
                 .all()
                 .statusCode(404);
-        // .extract()//Response status code
     }
-    //Status Line
 
     @Title("GetAnImage InvalidImageId")
     @Test
@@ -313,9 +307,8 @@ public class Images extends Properties{
                 .log()
                 .all()
                 .statusCode(404);
-        //.and().time(lessThan(ResponseTime));
+                //.and().time(lessThan(ResponseTime));
     }
-
 
     @Title("RetrieveAnImage") // First Record and then pass mediaURL to retrieve
     @Test
@@ -331,7 +324,6 @@ public class Images extends Properties{
                 .log()
                 .all()
                 .statusCode(201);
-        //.and().time(lessThan(ResponseTime));
 
         Thread.sleep(5000);
        String mediaURL =getImageMediaURL(response);
@@ -362,7 +354,7 @@ public class Images extends Properties{
                 .statusCode(404);
     }
 
-    @Title("Delete Image Invalid ImageId") // First Record and then pass imageId to delete
+    @Title("Delete Image Invalid ImageId") // First record, then pass imageId to delete
     @Test
     public void deleteImage() throws InterruptedException {
 
@@ -377,7 +369,6 @@ public class Images extends Properties{
                 .all()
                 .statusCode(201)
                 .contentType("application/json");
-        // and().time(lessThan(1000L));
 
         String imageId = getId(response,"image");
         System.out.println("Image Id: " + imageId);
@@ -431,47 +422,7 @@ public class Images extends Properties{
                 .statusCode(403);
     }
 
-//    @Title("Record Image with ReusableMethods and Steps")
-//    @Test
-//    public void postImageRecordSteps() {
-//        ValidatableResponse response = steps.recordImage(UserToken,ContentType,SourceId2)
-//                .statusCode(201)
-//                .statusLine("HTTP/1.1 201 Created");
-//
-//        String responseStr = response.extract().body().asString();
-//
-//        Gson gson = new Gson(); //TODO Fix
-//        JsonParser jp = new JsonParser();
-//        JsonElement je = jp.parse(responseStr);
-//        JsonObject responseBodyObject = je.getAsJsonObject();
-//
-//        JsonElement image = responseBodyObject.get("image");
-//        JsonObject imageObject = image.getAsJsonObject();
-//
-//        String imageId = imageObject.get("id").getAsString();
-//        System.out.println("Image Id: " + imageId);
-//
-//        String responseBody = response.toString();
-//
-//        responseBody.contains("ContentType");
-//        responseBody.contains("OK");
-//        responseBody.contains("201");
-//
-//        responseBody.contains("image");
-//        responseBody.contains("expires_at");
-//        responseBody.contains("clip_id");
-//        responseBody.contains("media_url");
-//        responseBody.contains("start");
-//        responseBody.contains("id");
-//        responseBody.contains("state");
-//
-//       // System.out.println(responseBody);
-//    }
-    //TODO Add more Response Assertions
-    //State - Present etc
 
-
-    //Calling Methods
     @Title("RetrieveAnImage validate ResponseBody") // First Record and then pass mediaURL to retrieve
     @Test
     public void retrieveAnImageResponseFieldValidation() throws InterruptedException {

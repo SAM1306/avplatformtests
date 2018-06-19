@@ -1,3 +1,4 @@
+/*
 package com.smartthings.avplatform.api;
 
 import com.smartthings.avplatform.testbase.TestBase;
@@ -21,3 +22,4 @@ public class SerenitySteps extends TestBase {
 }
 
 
+*/

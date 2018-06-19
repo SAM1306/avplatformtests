@@ -79,10 +79,8 @@ public class Sources extends Properties {
                 .log()
                 .all()
                 .statusCode(404);
-        //TODO Add response error message validation
     }
 
-    //TODO fix patch request
     @Title("Update A Source")
     @Test
     public void updateSource() {
@@ -103,43 +101,12 @@ public class Sources extends Properties {
                 .statusCode(200)
                 .and().time(lessThan(ResponseTime));
 
-       /* String responseStr = updateResponse.extract().body().asString();
-
-        Gson gson = new Gson(); //TODO Fix
-        JsonParser jp = new JsonParser();
-        JsonElement je = jp.parse(responseStr);
-        JsonObject responseBodyObject = je.getAsJsonObject();
-
-        JsonElement source = responseBodyObject.get("source");
-        JsonObject sourceObject = source.getAsJsonObject();
-*/
         JsonObject sourceObject = getResponseObject(updateResponse, "source");
 
         String name = sourceObject.get("name").getAsString();
         System.out.println("Updated Name: " + name);
 
-        //  if(name.equals("Front Door"))
-        //     System.out.println("SourceName succesfully updated");
-
     }
 }
 
-
-   /* @Ignore
-    @Test
-    public void getAXYZ(){
-
-    }
-    @Pending
-    @Test
-    public void getASourceInvalidAuth(){
-        //
-    };
-
-    @Manual
-    @Test
-    public void getASourceInvalidSourceId(){
-        //
-    };
-*/
 

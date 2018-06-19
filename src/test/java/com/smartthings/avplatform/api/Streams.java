@@ -169,8 +169,6 @@ public class Streams extends Properties {
         responseBody.contains("204");
     }
 
-    //TODO Remove hard coded values for Stream ID, pass parameters to other functions
-
     @Title("Request Live Stream, Get Stream, Delete Stream and Get Deleted Stream")
     @Test
     public void postStreamGetStreamDeleteStreamGetDeletedStream () throws InterruptedException {
@@ -184,10 +182,8 @@ public class Streams extends Properties {
                 .log()
                 .all()
                 .statusCode(201);
-        // .time(lessThan(1000L));
 
         System.out.println("Stream Requested");
-
 
         String responseStr = response.extract().body().asString();
         Gson gson = new Gson();
@@ -210,7 +206,6 @@ public class Streams extends Properties {
                 .log()
                 .all()
                 .statusCode(200);
-        //.time(lessThan(ResponseTime));
 
         System.out.println("Stream details retrieved");
 
@@ -235,7 +230,6 @@ public class Streams extends Properties {
                 .log()
                 .all()
                 .statusCode(204);
-        //.time(lessThan(ResponseTime));
 
         System.out.println("Stream Deleted");
 
@@ -251,8 +245,6 @@ public class Streams extends Properties {
                 .log()
                 .all()
                 .statusCode(404);
-        //   .statusLine(No such stream)
-        //.time(lessThan(ResponseTime));
 
         System.out.println("Attempted to retrieve deleted Stream details");
     }

@@ -25,16 +25,17 @@ public class Properties {
         RestAssured.baseURI = "https://api.s.st-av.net/v1";
     }
 
-    static String UserToken = "aff6e157-f874-4087-93da-a40b54a7bbe1";
-    static String SourceId_1 = "17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3";
-    static String SourceId_2 = "12630f5c-b852-4f7b-ac7c-bdd410b44b0f";
-    static String offlineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
+    static String UserToken = "ec35d63c-7e48-466e-9311-9b0b8ed409e1";
+    static String SourceId_1 = "2e4a0aa1-f94a-4b39-8329-5e287f124f03";
+    static String SourceId_2 = "2ac1b70f-9b6d-4964-8fd4-959ae1a61dcd";
+
+    static String offlineSourceId = "f5305ffa-e600-427c-aacd-3f91217bdec6";
     static String InvalidUserToken = "affbffcff";
     static String InvalidSourceId = "17c9f33d4c3";
     static String mediaUrl = "";
     static String StreamID = "TyauHPKdbRbi9MwkmoezS";
     static String ImageId = "SZ-pKIbYS4oMDgKc0Y2nI";
-    static String ImageMediaURL = "https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cf-973e-4e59-b6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
+    static String ImageMediaURL = "https://mediaserv.media11.ec2.st-av.net/image?source_id=2ac1b70f-9b6d-4964-8fd4-959ae1a61dcd&image_id=Bzqp6-b9lW9SBWwjEWKVI";
     static String InvalidImageMediaURL = "https://mediaserv.media11.ec2.st-av.net/image?source_id=17c9f3cb6cc-61ff20b3d4c3&image_id=imcL-Pn4ASBI7vO6viw5I";
     static String InvalidImageId = "SZ-pKIbYSKc0Y2nI";
     static String ContentType = "application/x-www-form-urlencoded";
@@ -42,11 +43,11 @@ public class Properties {
     static String OfflineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
     static String SourceName = "Cam_" + Properties.getRandomValue();
 
-    static String ZoneId = "Iwn7gQ4ZFY_BezmXPaLoZ";
+    static String ZoneId = "Uauy6eV8IEhSiQkGvgEfZ";
     static String InvalidZoneId = "xyz";
     static String ZoneName = "Zone_" + Properties.getRandomValue();
 
-    static String ClipID = "5s1RY18-sWq6gipY8i60J";
+    static String ClipID = "k-rPSRv5kWeNM0rIbiviJ";
     static String InvalidClipID = "2f4nKNN0VlW9qURJ";
 
 

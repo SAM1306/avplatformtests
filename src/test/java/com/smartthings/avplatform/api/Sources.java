@@ -91,7 +91,7 @@ public class Sources extends Properties {
         ValidatableResponse updateResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", OfflineSourceId)
+                .queryParam("source_id", SourceId_2)
                 .body(jsonMap.toJSONString())
                 .when()
                 .patch("/source")

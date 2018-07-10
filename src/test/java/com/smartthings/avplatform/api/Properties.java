@@ -26,10 +26,11 @@ public class Properties {
     }
 
     static String UserToken = "ec35d63c-7e48-466e-9311-9b0b8ed409e1";
+    //F210
     static String SourceId_1 = "2e4a0aa1-f94a-4b39-8329-5e287f124f03";
+    //F20E
     static String SourceId_2 = "2ac1b70f-9b6d-4964-8fd4-959ae1a61dcd";
 
-    static String offlineSourceId = "f5305ffa-e600-427c-aacd-3f91217bdec6";
     static String InvalidUserToken = "affbffcff";
     static String InvalidSourceId = "17c9f33d4c3";
     static String mediaUrl = "";
@@ -40,7 +41,7 @@ public class Properties {
     static String InvalidImageId = "SZ-pKIbYSKc0Y2nI";
     static String ContentType = "application/x-www-form-urlencoded";
     static Long ResponseTime = 10000L;
-    static String OfflineSourceId = "ec31e3fa-4609-4c19-9263-000446729196";
+    static String offlineSourceId = "f5305ffa-e600-427c-aacd-3f91217bdec6";
     static String SourceName = "Cam_" + Properties.getRandomValue();
 
     static String ZoneId = "Uauy6eV8IEhSiQkGvgEfZ";

@@ -64,7 +64,6 @@ public class Properties {
         return responseBodyString;
     }
 
-
 /*
 
     public String getAllImages(String UserToken, String SourceId) {

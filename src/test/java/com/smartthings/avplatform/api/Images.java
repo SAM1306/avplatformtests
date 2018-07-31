@@ -349,7 +349,7 @@ public class Images extends Properties{
                 .then()
                 .log()
                 .all()
-                .statusCode(404);
+                .statusCode(404); // Status code 404 changed to 400 as per  AVPLATFORM-887
     }
 
     @Title("Delete Image Invalid ImageId") // First record, then pass imageId to delete

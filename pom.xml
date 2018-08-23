@@ -13,12 +13,14 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <serenity.version>1.6.1</serenity.version>
-
+        <!--<serenity.version>1.6.1</serenity.version>-->
+        <serenity.version>1.9.31</serenity.version>
        <!-- <slf4j.version>1.6.1</slf4j.version> -->
-        <serenity.maven.version>1.6.1</serenity.maven.version>
+        <!--<serenity.maven.version>1.6.1</serenity.maven.version>-->
+        <serenity.maven.version>1.9.31</serenity.maven.version>
         <webdriver.driver>firefox</webdriver.driver>
-        <serenity.cucumber.version>1.1.6</serenity.cucumber.version>
+        <serenity.cucumber.version>1.9.31</serenity.cucumber.version>
+        <!--<serenity.maven.version>1.6.1</serenity.maven.version>-->
     </properties>
 
     <dependencies>
@@ -89,7 +91,7 @@
     </dependencies>
     <build>
 
-        <plugins>
+         <plugins>
             <!--  <plugin>
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-surefire-plugin</artifactId>
@@ -100,7 +102,7 @@
               </plugin>-->
             <plugin>
                 <artifactId>maven-failsafe-plugin</artifactId>
-                <version>2.18</version>
+                <version>2.22.0</version>
 
                 <configuration>
 

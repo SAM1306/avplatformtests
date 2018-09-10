@@ -1,3 +1,4 @@
+/*
 
 
 package com.smartthings.avplatform.api;
@@ -443,3 +444,4 @@ public class Clips extends Properties {
 
     }
 
+*/

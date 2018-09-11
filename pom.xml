@@ -9,8 +9,7 @@
     <version>1.0.0-SNAPSHOT</version>
 
     <name>AVPlatform API Tests</name>
-
-
+    
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -23,7 +22,6 @@
         <serenity.cucumber.version>1.6.1</serenity.cucumber.version>
         <!--<serenity.maven.version>1.6.1</serenity.maven.version>-->
     </properties>
-
 
     <dependencies>
         <dependency>
@@ -93,7 +91,7 @@
     </dependencies>
     <build>
 
-         <plugins>
+        <plugins>
             <!--  <plugin>
                   <groupId>org.apache.maven.plugins</groupId>
                   <artifactId>maven-surefire-plugin</artifactId>
@@ -125,7 +123,6 @@
                         </goals>
                     </execution>
                 </executions>
-
             </plugin>
             <plugin>
                 <groupId>net.serenity-bdd.maven.plugins</groupId>
@@ -142,24 +139,7 @@
                         <artifactId>serenity-core</artifactId>
                         <version>${serenity.version}</version>
                     </dependency>
-
                 </dependencies>
-
-              <!--  <distributionManagement>
-                    <repository>
-                        <id>central</id>
-                        <name>83d43b5afeb5-releases</name>
-                        <url>${env.MAVEN_REPO_URL}/libs-release-local</url>
-                    </repository>
-                </distributionManagement>-->
-
-              <!--  <build>
-                    <plugins>
-                        ...<plugin>
-                    </plugin>
-                    </plugins>
-                </build>-->
-
                 <executions>
                     <execution>
                         <id>serenity-reports</id>
@@ -173,4 +153,41 @@
         </plugins>
     </build>
 
+    <profiles>
+        <profile>
+            <repositories>
+                <repository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>central</id>
+                    <name>libs-release</name>
+                    <url>https://smartthings.artifactoryonline.com/smartthings/libs-release</url>
+                </repository>
+                <repository>
+                    <snapshots />
+                    <id>snapshots</id>
+                    <name>libs-snapshot</name>
+                    <url>https://smartthings.artifactoryonline.com/smartthings/libs-snapshot</url>
+                </repository>
+            </repositories>
+            <pluginRepositories>
+                <pluginRepository>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                    <id>central</id>
+                    <name>plugins-release</name>
+                    <url>https://smartthings.artifactoryonline.com/smartthings/plugins-release</url>
+                </pluginRepository>
+                <pluginRepository>
+                    <snapshots />
+                    <id>snapshots</id>
+                    <name>plugins-release</name>
+                    <url>https://smartthings.artifactoryonline.com/smartthings/plugins-release</url>
+                </pluginRepository>
+            </pluginRepositories>
+            <id>artifactory</id>
+        </profile>
+    </profiles>
 </project>

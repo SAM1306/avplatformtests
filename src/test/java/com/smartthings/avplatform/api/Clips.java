@@ -1,4 +1,3 @@
-/*
 
 
 package com.smartthings.avplatform.api;
@@ -397,7 +396,7 @@ public class Clips extends Properties {
          Thread.sleep(20000); //To let the previous request complete before running next Clip Record Request
         }
 
-    @Title("Record 10 clips and verify if they are recorded successfully")
+   /* @Title("Record 10 clips and verify if they are recorded successfully")
     @Test
     public void _14postClipsRecord() throws InterruptedException {
 
@@ -440,8 +439,7 @@ public class Clips extends Properties {
            System.out.println("Clip " +k+ " recorded");
         }
 
-    }
+    }*/
 
     }
 
-*/

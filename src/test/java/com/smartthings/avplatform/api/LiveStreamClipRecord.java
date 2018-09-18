@@ -20,7 +20,7 @@ public class LiveStreamClipRecord extends Properties {
 
     @Title("Request Live Stream, Record Clip simultaneously on same camera")
     @Test
-    public void liveStreamClipRecordSameCamera() throws InterruptedException {
+    public void _01liveStreamClipRecordSameCamera() throws InterruptedException {
         ValidatableResponse response = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -115,7 +115,7 @@ public class LiveStreamClipRecord extends Properties {
 
     @Title("Request Live Stream on One Camera, Record Clip on another camera")  //Using two cameras
     @Test
-    public void liveStreamClipRecordOnDifferentCameras() throws InterruptedException {
+    public void _02liveStreamClipRecordOnDifferentCameras() throws InterruptedException {
         ValidatableResponse streamResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
@@ -170,7 +170,7 @@ public class LiveStreamClipRecord extends Properties {
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .param("source_id", SourceId_2)
-                .param("duration", 20)
+                .param("duration", 10)
                 .when()
                 .post("/clip/record")
                 .then()

@@ -65,11 +65,11 @@ public class Streams extends Properties {
                 .log()
                 .all()
                 .time(lessThan(ResponseTime));
-        JsonElement eventLog = streamObject.get("event_log").getAsJsonArray();
+      /*  JsonElement eventLog = streamObject.get("event_log").getAsJsonArray();
         JsonObject eventObject = eventLog.getAsJsonObject();
         String name = eventObject.get("name").getAsString();
         System.out.println("Name : " + name);
-
+*/
         String responseBody = response.toString();
         // Response Body Validation
         responseBody.contains("ContentType");

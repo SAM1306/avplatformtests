@@ -281,7 +281,7 @@ public class Clips extends Properties {
                 .statusCode(201);
 
         System.out.println(" Clip Requested");
-        Thread.sleep(20000);
+        Thread.sleep(30000);
 
         String clipID = getId(response,"clip");
         System.out.println("ClipID: " + clipID);
@@ -292,7 +292,7 @@ public class Clips extends Properties {
                 .queryParam("source_id", SourceId_1)
                 .queryParam("clip_id", clipID)
                 .when()
-                .get("/clip")
+                .get("/clip_images")
                 .then()
                 .log()
                 .all()

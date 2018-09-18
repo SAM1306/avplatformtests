@@ -187,7 +187,7 @@ public class Clips extends Properties {
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .param("source_id", SourceId_1)
-                .param("duration", 10)
+                .param("duration", 20)
                 .when()
                 .post("/clip/record")
                 .then()
@@ -196,7 +196,7 @@ public class Clips extends Properties {
                 .statusCode(201);
         //.time(lessThan(ResponseTime));
         System.out.println(" Clip Requested");
-        Thread.sleep(20000);
+        Thread.sleep(40000);
 
         ValidatableResponse getClipResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
@@ -386,7 +386,7 @@ public class Clips extends Properties {
                     .auth().oauth2(UserToken)
                     .contentType("application/x-www-form-urlencoded")
                     .param("source_id", SourceId_1)
-                    .param("duration", 20)
+                    .param("duration", 10)
                     .when()
                     .post("/clip/record")
                     .then()

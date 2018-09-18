@@ -339,12 +339,6 @@ public class Zones extends Properties{
         //.and().time(lessThan(ResponseTime));
     }
 
-    //TODO Create a Zone(or take existing Zone, simulate motion within the zone, verify motion detected event,
-    //Check if motion detected record clip
-
-
-
-
 }
 
 

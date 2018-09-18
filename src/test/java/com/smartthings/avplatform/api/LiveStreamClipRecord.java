@@ -292,7 +292,6 @@ public class LiveStreamClipRecord extends Properties {
                     .statusCode(200);
             //.time(lessThan(ResponseTime));
 
-
             System.out.println(+i+ "Clip State: " + state);
             if (state.equals("present"))
                 System.out.println("Clip is present");
@@ -301,7 +300,7 @@ public class LiveStreamClipRecord extends Properties {
 
         }
 
-//TODO Fix Clip is not present ??
+        //TODO Fix Clip is not present ??
         System.out.println("Running: " + running);
         running.equals("false");
 

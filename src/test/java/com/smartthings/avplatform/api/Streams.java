@@ -5,12 +5,10 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,8 +37,7 @@ public class Streams extends Properties {
         String responseStr = response.extract().body().asString();
 
         //System.out.println("printing response: "+responseStr);
-
-        Gson gson = new Gson();
+        //Gson gson = new Gson();
         JsonParser jp = new JsonParser();
         JsonElement je = jp.parse(responseStr);
         JsonObject responseBodyObject = je.getAsJsonObject();
@@ -68,11 +65,11 @@ public class Streams extends Properties {
                 .log()
                 .all()
                 .time(lessThan(ResponseTime));
-/*   JsonElement eventLog = streamObject.get("event_log").getAsJsonArray();
+        JsonElement eventLog = streamObject.get("event_log").getAsJsonArray();
         JsonObject eventObject = eventLog.getAsJsonObject();
         String name = eventObject.get("name").getAsString();
         System.out.println("Name : " + name);
-   */
+
         String responseBody = response.toString();
         // Response Body Validation
         responseBody.contains("ContentType");

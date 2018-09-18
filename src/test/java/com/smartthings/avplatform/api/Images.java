@@ -2,25 +2,16 @@
 
 package com.smartthings.avplatform.api;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.hasValue;
-import static org.hamcrest.Matchers.lessThan;
-
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SerenityRunner.class)
 public class Images extends Properties{
@@ -177,7 +168,6 @@ public class Images extends Properties{
         responseBody.contains("state");
 
         System.out.println(responseBody);
-
     }
 
     @Ignore
@@ -324,7 +314,7 @@ public class Images extends Properties{
                 .statusCode(201);
 
         Thread.sleep(5000);
-       String mediaURL =getImageMediaURL(response);
+        String mediaURL =getImageMediaURL(response);
         System.out.println("Image MediaURL: " + mediaURL);
 
         ValidatableResponse getResponse = SerenityRest.given()
@@ -386,7 +376,7 @@ public class Images extends Properties{
                 .statusCode(404);
     }
 
-    @Title("Delete Image Invalid SourceId") // First Record and then pass imageId to delete
+    @Title("Delete Image Invalid SourceId")
     @Test
     public void deleteImageInvalidSourceId() throws InterruptedException {
 
@@ -419,7 +409,6 @@ public class Images extends Properties{
                 .all()
                 .statusCode(403);
     }
-
 
     @Title("RetrieveAnImage validate ResponseBody") // First Record and then pass mediaURL to retrieve
     @Test
@@ -482,11 +471,11 @@ public class Images extends Properties{
                 .all()
                 .statusCode(200);
 
-       String imageId = getId(response,"image");
-       System.out.println("Image Id is " +imageId);
+        String imageId = getId(response,"image");
+        System.out.println("Image Id is " +imageId);
 
-       String imageURL = getMediaURL(response, "image");
-       System.out.println("Image URL is " +imageURL);
+        String imageURL = getMediaURL(response, "image");
+        System.out.println("Image URL is " +imageURL);
 
     }
 

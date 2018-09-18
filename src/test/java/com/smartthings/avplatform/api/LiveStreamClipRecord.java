@@ -6,23 +6,17 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.smartthings.avplatform.testbase.TestBase;
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import java.util.List;
 import static org.hamcrest.Matchers.lessThan;
 
 @RunWith(SerenityRunner.class)
 public class LiveStreamClipRecord extends Properties {
 
-    @Ignore
     @Title("Request Live Stream, Record Clip simultaneously on same camera")
     @Test
     public void liveStreamClipRecordSameCamera() throws InterruptedException {
@@ -118,7 +112,6 @@ public class LiveStreamClipRecord extends Properties {
 
     }
 
-    @Ignore
     @Title("Request Live Stream on One Camera, Record Clip on another camera")  //Using two cameras
     @Test
     public void liveStreamClipRecordOnDifferentCameras() throws InterruptedException {
@@ -218,7 +211,7 @@ public class LiveStreamClipRecord extends Properties {
 
     }
 
-    @Ignore
+
     @Title("Request Live Stream, Record 10 Clips  on same camera")  //Same Camera
     @Test
     public void liveStreamMultipleClipRecordsSameCamera() throws InterruptedException {

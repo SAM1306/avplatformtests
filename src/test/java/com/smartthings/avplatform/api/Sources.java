@@ -1,17 +1,12 @@
 
 package com.smartthings.avplatform.api;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
 import org.json.simple.JSONObject;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -32,7 +27,6 @@ public class Sources extends Properties {
                 .log()
                 .all()
                 .statusCode(200);
-
     }
 
     @Title("Get A Source By Id")
@@ -48,7 +42,6 @@ public class Sources extends Properties {
                 .log()
                 .all()
                 .statusCode(200);
-
     }
 
     @Title("Get A Source with InvalidAuth")
@@ -102,7 +95,6 @@ public class Sources extends Properties {
                 .and().time(lessThan(ResponseTime));
 
         JsonObject sourceObject = getResponseObject(updateResponse, "source");
-
         String name = sourceObject.get("name").getAsString();
         System.out.println("Updated Name: " + name);
 

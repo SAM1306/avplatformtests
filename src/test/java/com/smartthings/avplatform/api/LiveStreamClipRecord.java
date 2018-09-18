@@ -10,6 +10,7 @@ import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
 import net.thucydides.core.annotations.Title;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static org.hamcrest.Matchers.lessThan;
@@ -29,7 +30,7 @@ public class LiveStreamClipRecord extends Properties {
                 .then()
                 .log()
                 .all()
-                .time(lessThan(10000L));
+                .time(lessThan(20000L));
 
         String responseStr = response.extract().body().asString();
         //System.out.println("printing response: "+responseStr);
@@ -124,7 +125,7 @@ public class LiveStreamClipRecord extends Properties {
                 .then()
                 .log()
                 .all()
-                .time(lessThan(10000L));
+                .time(lessThan(20000L));
 
         String responseStr = streamResponse.extract().body().asString();
 
@@ -212,6 +213,7 @@ public class LiveStreamClipRecord extends Properties {
     }
 
 
+    @Ignore
     @Title("Request Live Stream, Record 10 Clips  on same camera")  //Same Camera
     @Test
     public void liveStreamMultipleClipRecordsSameCamera() throws InterruptedException {

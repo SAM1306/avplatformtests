@@ -187,7 +187,7 @@ public class Clips extends Properties {
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .param("source_id", SourceId_1)
-                .param("duration", 20)
+                .param("duration", 120)
                 .when()
                 .post("/clip/record")
                 .then()
@@ -196,13 +196,22 @@ public class Clips extends Properties {
                 .statusCode(201);
         //.time(lessThan(ResponseTime));
         System.out.println(" Clip Requested");
-        Thread.sleep(40000);
+        Thread.sleep(140000);
+
+        String actualState = getCurrentStateOfClip(response);
+        System.out.println("Actual State of clip : " +actualState);
+        String expectedState = "present";
+        assertThat(actualState.equalsIgnoreCase(expectedState));
+        System.out.println("Clip record is successful");
+
+        String clipID = getId(response,"clip");
+        System.out.println("ClipID: " + clipID);
 
         ValidatableResponse getClipResponse = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .queryParam("source_id", SourceId_1)
-                //      .queryParam("clip_id", clipID)
+                .queryParam("clip_id", clipID)
                 .when()
                 .get("/clip")
                 .then()
@@ -382,6 +391,7 @@ public class Clips extends Properties {
 
         String expectedState = "pending";
         assertThat(clipState.equalsIgnoreCase(expectedState));
+
          ValidatableResponse response2 = SerenityRest.given()
                     .auth().oauth2(UserToken)
                     .contentType("application/x-www-form-urlencoded")

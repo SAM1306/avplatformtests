@@ -75,7 +75,7 @@ public class LiveStreamClipRecord extends Properties {
                 .auth().oauth2(UserToken)
                 .contentType("application/x-www-form-urlencoded")
                 .param("source_id", SourceId_1)
-                .param("duration", 20)
+                .param("duration", 10)
                 .when()
                 .post("/clip/record")
                 .then()

@@ -22,6 +22,7 @@ import static org.hamcrest.Matchers.lessThan;
 @RunWith(SerenityRunner.class)
 public class LiveStreamClipRecord extends Properties {
 
+    @Ignore
     @Title("Request Live Stream, Record Clip simultaneously on same camera")
     @Test
     public void _01liveStreamClipRecordSameCamera() throws InterruptedException {

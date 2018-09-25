@@ -1,11 +1,8 @@
+/*
 
 
 package com.smartthings.avplatform.api;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.runners.SerenityRunner;
 import net.serenitybdd.rest.SerenityRest;
@@ -15,6 +12,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.lessThan;
 
@@ -22,6 +20,7 @@ import static org.hamcrest.Matchers.lessThan;
 @RunWith(SerenityRunner.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Clips extends Properties {
+
 
     @Title("Request Clip Record, Get a Clip by Id, Delete a clip and Get Deleted clip")
     @Test
@@ -406,7 +405,8 @@ public class Clips extends Properties {
          Thread.sleep(20000); //To let the previous request complete before running next Clip Record Request
         }
 
-   /* @Title("Record 10 clips and verify if they are recorded successfully")
+   */
+/* @Title("Record 10 clips and verify if they are recorded successfully")
     @Test
     public void _14postClipsRecord() throws InterruptedException {
 
@@ -449,7 +449,9 @@ public class Clips extends Properties {
            System.out.println("Clip " +k+ " recorded");
         }
 
-    }*/
+    }*//*
+
 
     }
 
+*/

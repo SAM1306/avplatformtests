@@ -1,4 +1,3 @@
-/*
 
 
 package com.smartthings.avplatform.api;
@@ -35,8 +34,6 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
                 .statusCode(201)
                 .time(lessThan(ResponseTime));
 
@@ -62,8 +59,6 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .log()
-                .all()
                 .statusCode(200)
                 .time(lessThan(ResponseTime));
 
@@ -77,8 +72,6 @@ public class Clips extends Properties {
                 .when()
                 .delete("/clip")
                 .then()
-                .log()
-                .all()
                 .statusCode(204)
                 .time(lessThan(ResponseTime));
 
@@ -93,8 +86,6 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .log()
-                .all()
                 .statusCode(404)
                 .time(lessThan(ResponseTime));
 
@@ -113,8 +104,6 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .log()
-                .all()
                 .statusCode(403)
                 .time(lessThan(ResponseTime));
 
@@ -132,8 +121,6 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .log()
-                .all()
                 .statusCode(403)
                 .time(lessThan(ResponseTime));
 
@@ -150,8 +137,6 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .log()
-                .all()
                 .statusCode(200)
                 .time(lessThan(ResponseTime));
 
@@ -169,8 +154,6 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
                 .statusCode(400)
                 .time(lessThan(ResponseTime));
 
@@ -179,6 +162,7 @@ public class Clips extends Properties {
         responseStr.contains("Duration must be between 10 and 120 seconds");
     }
 
+    @Ignore
     @Title("Request Clip Record duration=120sec")
     @Test
     public void _06postClipMaxDuration() throws InterruptedException {
@@ -190,8 +174,6 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
                 .statusCode(201);
         //.time(lessThan(ResponseTime));
         System.out.println(" Clip Requested");
@@ -214,8 +196,6 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .log()
-                .all()
                 .statusCode(200)
                 .time(lessThan(ResponseTime));
     }
@@ -230,8 +210,6 @@ public class Clips extends Properties {
                 .when()
                 .get("/clips")
                 .then()
-                .log()
-                .all()
                 .statusCode(200)
                 .time(lessThan(ResponseTime));
 
@@ -249,8 +227,6 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
                 .statusCode(201);
 
         System.out.println(" Clip Requested");
@@ -267,8 +243,6 @@ public class Clips extends Properties {
                 .when()
                 .get(mediaURL)
                 .then()
-                .log()
-                .all()
                 .statusCode(200).contentType("video/mp4");
     }
 
@@ -284,8 +258,6 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
                 .statusCode(201);
 
         System.out.println(" Clip Requested");
@@ -302,8 +274,6 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip_images")
                 .then()
-                .log()
-                .all()
                 .statusCode(200);
         System.out.println("Clip Images retrieved");
     }
@@ -319,8 +289,6 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
                 .statusCode(403)
                 .time(lessThan(ResponseTime));
 
@@ -341,8 +309,6 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
                 .statusCode(403)
                 .time(lessThan(ResponseTime));
 
@@ -360,8 +326,6 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
                 .statusCode(404)
                 .time(lessThan(ResponseTime));
 
@@ -379,8 +343,6 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
                 .statusCode(201);
 
         System.out.println("Clip 1 record requested");
@@ -399,14 +361,12 @@ public class Clips extends Properties {
                     .when()
                     .post("/clip/record")
                     .then()
-                    .log()
-                    .all()
                     .statusCode(403);
          Thread.sleep(20000); //To let the previous request complete before running next Clip Record Request
         }
 
-   */
-/* @Title("Record 10 clips and verify if they are recorded successfully")
+    @Ignore
+    @Title("Record 10 clips and verify if they are recorded successfully")
     @Test
     public void _14postClipsRecord() throws InterruptedException {
 
@@ -419,8 +379,6 @@ public class Clips extends Properties {
                     .when()
                     .post("/clip/record")
                     .then()
-                    .log()
-                    .all()
                     .statusCode(201);
 
             System.out.println("Clip " +k+ " requested");
@@ -438,8 +396,6 @@ public class Clips extends Properties {
                     .when()
                     .get("/clip")
                     .then()
-                    .log()
-                    .all()
                     .statusCode(200);
 
            String actualState2 = getCurrentStateOfClip(getClipResponse);
@@ -449,9 +405,8 @@ public class Clips extends Properties {
            System.out.println("Clip " +k+ " recorded");
         }
 
-    }*//*
+    }
 
 
     }
 
-*/

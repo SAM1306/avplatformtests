@@ -34,8 +34,7 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .statusCode(201)
-                .time(lessThan(ResponseTime));
+                .statusCode(201);
 
         System.out.println("Clip Record Requested");
 
@@ -59,8 +58,7 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .statusCode(200)
-                .time(lessThan(ResponseTime));
+                .statusCode(200);
 
         System.out.println("Clip details retrieved");
 
@@ -72,8 +70,7 @@ public class Clips extends Properties {
                 .when()
                 .delete("/clip")
                 .then()
-                .statusCode(204)
-                .time(lessThan(ResponseTime));
+                .statusCode(204);
 
         System.out.println("Clip Deleted");
 
@@ -86,8 +83,8 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .statusCode(404)
-                .time(lessThan(ResponseTime));
+                .statusCode(404);
+               // .time(lessThan(ResponseTime));
 
         System.out.println("Clip not found");
 
@@ -104,8 +101,7 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .statusCode(403)
-                .time(lessThan(ResponseTime));
+                .statusCode(403);
 
         System.out.println("Invalid Auth");
     }
@@ -121,8 +117,8 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .statusCode(403)
-                .time(lessThan(ResponseTime));
+                .statusCode(403);
+               // .time(lessThan(ResponseTime));
 
         System.out.println("Invalid Auth");
     }
@@ -137,8 +133,8 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .statusCode(200)
-                .time(lessThan(ResponseTime));
+                .statusCode(200);
+               // .time(lessThan(ResponseTime));
 
         System.out.println("Most recent clip is retrieved");
     }
@@ -154,8 +150,8 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .statusCode(400)
-                .time(lessThan(ResponseTime));
+                .statusCode(400);
+               // .time(lessThan(ResponseTime));
 
         System.out.println("Lengthy Clip Requested");
         String responseStr = response.extract().body().asString();
@@ -196,8 +192,8 @@ public class Clips extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .statusCode(200)
-                .time(lessThan(ResponseTime));
+                .statusCode(200);
+               // .time(lessThan(ResponseTime));
     }
 
     @Title("List All Clips")
@@ -210,8 +206,8 @@ public class Clips extends Properties {
                 .when()
                 .get("/clips")
                 .then()
-                .statusCode(200)
-                .time(lessThan(ResponseTime));
+                .statusCode(200);
+               // .time(lessThan(ResponseTime));
 
         System.out.println("List of all clips is retrieved");
     }
@@ -289,8 +285,8 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .statusCode(403)
-                .time(lessThan(ResponseTime));
+                .statusCode(403);
+               // .time(lessThan(ResponseTime));
 
         System.out.println("Clip record requested from an Offline Camera");
 
@@ -309,8 +305,8 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .statusCode(403)
-                .time(lessThan(ResponseTime));
+                .statusCode(403);
+              //  .time(lessThan(ResponseTime));
 
         System.out.println("Clip record requested with Invalid Auth");
     }
@@ -326,8 +322,8 @@ public class Clips extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .statusCode(404)
-                .time(lessThan(ResponseTime));
+                .statusCode(404);
+               // .time(lessThan(ResponseTime));
 
         System.out.println("Clip record requested with Invalid SourceId");
     }

@@ -134,51 +134,6 @@ public class Zones extends Properties{
                 .and().time(lessThan(ResponseTime));
     }
 
-    @Ignore
-    @Title("Create a Zone")
-    @Test
-    public void postZone() {
-
-        List<List<Integer>> zoneCoordinates = new ArrayList<List<Integer>>();
-
-        List<Integer> list1 = new ArrayList<Integer>();
-        list1.add(1);
-        list1.add(0);
-
-        List<Integer> list2 = new ArrayList<Integer>();
-        list2.add(1);
-        list2.add(1);
-
-        List<Integer> list3 = new ArrayList<Integer>();
-        list3.add(2);
-        list3.add(0);
-
-        List<Integer> list4 = new ArrayList<Integer>();
-        list4.add(2);
-        list4.add(1);
-
-        zoneCoordinates.add(list1);
-        zoneCoordinates.add(list2);
-        zoneCoordinates.add(list3);
-        zoneCoordinates.add(list4);
-
-        JSONObject jsonMap = new JSONObject();
-        jsonMap.put("name", ZoneName);
-        jsonMap.put("coordinates", zoneCoordinates);
-
-        SerenityRest.given()
-                .auth().oauth2(UserToken)
-                .contentType("application/json")
-                .queryParam("source_id", SourceId_1)
-                .body(jsonMap.toJSONString())
-                .when()
-                .post("/zone")
-                .then()
-                .log()
-                .all()
-                .statusCode(201)
-                .and().time(lessThan(ResponseTime));
-    }
 
     @Title("Create a Zone without Zone Name")
     @Test
@@ -210,10 +165,10 @@ public class Zones extends Properties{
         JSONObject jsonMap = new JSONObject();
         jsonMap.put("coordinates", zoneCoordinates);
 
-        SerenityRest.given()
+        ValidatableResponse createZone = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId_1)
+                .queryParam("source_id", SourceId_2)
                 .body(jsonMap.toJSONString())
                 .when()
                 .post("/zone")
@@ -222,6 +177,33 @@ public class Zones extends Properties{
                 .all()
                 .statusCode(201)
                 .and().time(lessThan(ResponseTime));
+
+        //Delete created Zone
+        String responseStr = createZone.extract().body().asString();
+        JsonParser jp = new JsonParser();
+        JsonElement je = jp.parse(responseStr);
+        JsonObject responseBodyObject = je.getAsJsonObject();
+
+        JsonElement zone = responseBodyObject.get("zone");
+        JsonObject zoneObject = zone.getAsJsonObject();
+        String zoneID = zoneObject.get("id").getAsString();
+        System.out.println("ZoneID: " + zoneID);
+
+        SerenityRest.given()
+                .auth().oauth2(UserToken)
+                .contentType("application/json")
+                .queryParam("source_id", SourceId_2)
+                .queryParam("zone_id", zoneID)
+                .when()
+                .delete("/zone")
+                .then()
+                .log()
+                .all()
+                .statusCode(204);
+
+        System.out.println("XXXXXXXXXXXXXXXXXXXXXX");
+        System.out.println("Zone deleted");
+
     }
 
     @Title("Create a Zone without Zone Coordinates")
@@ -234,7 +216,7 @@ public class Zones extends Properties{
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId_1)
+                .queryParam("source_id", SourceId_2)
                 .body(jsonMap.toJSONString())
                 .when()
                 .post("/zone")
@@ -245,6 +227,7 @@ public class Zones extends Properties{
                 .and().time(lessThan(ResponseTime));
     }
 
+    @Title("Create Zone Get Zone Delete Zone")
     @Test
     public void postZoneGetZoneDeleteZoneGetDeletedZone() throws InterruptedException {
 
@@ -283,7 +266,7 @@ public class Zones extends Properties{
         ValidatableResponse createZone = SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId_1)
+                .queryParam("source_id", SourceId_2)
                 .body(jsonMap.toJSONString())
                 .when()
                 .post("/zone")
@@ -310,7 +293,7 @@ public class Zones extends Properties{
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId_1)
+                .queryParam("source_id", SourceId_2)
                 .queryParam("zone_id", zoneID)
                 .when()
                 .get("/zone")
@@ -325,7 +308,7 @@ public class Zones extends Properties{
         SerenityRest.given()
                 .auth().oauth2(UserToken)
                 .contentType("application/json")
-                .queryParam("source_id", SourceId_1)
+                .queryParam("source_id", SourceId_2)
                 .queryParam("zone_id", zoneID)
                 .when()
                 .delete("/zone")

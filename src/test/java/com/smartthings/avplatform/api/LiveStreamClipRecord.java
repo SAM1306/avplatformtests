@@ -33,8 +33,8 @@ public class LiveStreamClipRecord extends Properties {
                 .when()
                 .post("/stream")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .time(lessThan(20000L));
 
         String responseStr = response.extract().body().asString();
@@ -64,9 +64,9 @@ public class LiveStreamClipRecord extends Properties {
                 .when()
                 .get("/stream")
                 .then()
-                .log()
-                .all()
-                .statusCode(200)
+//                .log()
+//                .all()
+                  .statusCode(200)
                 .time(lessThan(1000L));
 
         System.out.println("LiveStream Requested");
@@ -80,8 +80,8 @@ public class LiveStreamClipRecord extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(201)
                 .time(lessThan(1000L));
         System.out.println("Clip Record Requested");
@@ -109,8 +109,8 @@ public class LiveStreamClipRecord extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(200);
         //.time(lessThan(1000L));
 
@@ -128,8 +128,8 @@ public class LiveStreamClipRecord extends Properties {
                 .when()
                 .post("/stream")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .time(lessThan(20000L));
 
         String responseStr = streamResponse.extract().body().asString();
@@ -161,8 +161,8 @@ public class LiveStreamClipRecord extends Properties {
                 .when()
                 .get("/stream")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(200)
                 .time(lessThan(1000L));
 
@@ -179,8 +179,8 @@ public class LiveStreamClipRecord extends Properties {
                 .when()
                 .post("/clip/record")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(201)
                 .time(lessThan(1000L));
         System.out.println("Clip Record Requested");
@@ -208,8 +208,8 @@ public class LiveStreamClipRecord extends Properties {
                 .when()
                 .get("/clip")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(200);
         //.time(lessThan(1000L));
 
@@ -229,8 +229,8 @@ public class LiveStreamClipRecord extends Properties {
                 .when()
                 .post("/stream")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .time(lessThan(10000L));
 
         String responseStr = response.extract().body().asString();
@@ -261,8 +261,8 @@ public class LiveStreamClipRecord extends Properties {
                     .when()
                     .post("/clip/record")
                     .then()
-                    .log()
-                    .all()
+//                    .log()
+//                    .all()
                     .statusCode(201);
             //.time(lessThan(ResponseTime));
             Thread.sleep(20000);
@@ -288,8 +288,8 @@ public class LiveStreamClipRecord extends Properties {
                     .when()
                     .get("/clip")
                     .then()
-                    .log()
-                    .all()
+//                    .log()
+//                    .all()
                     .statusCode(200);
             //.time(lessThan(ResponseTime));
 

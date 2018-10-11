@@ -27,8 +27,8 @@ public class Sources extends Properties {
                 .when()
                 .get("/sources")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(200);
     }
 
@@ -42,8 +42,8 @@ public class Sources extends Properties {
                 .when()
                 .get("/source")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(200);
     }
 
@@ -57,8 +57,8 @@ public class Sources extends Properties {
                 .when()
                 .get("/source")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(403);
     }
 
@@ -72,8 +72,8 @@ public class Sources extends Properties {
                 .when()
                 .get("/source")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(404);
     }
 
@@ -92,8 +92,8 @@ public class Sources extends Properties {
                 .when()
                 .patch("/source")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(200)
                 .and().time(lessThan(ResponseTime));
 

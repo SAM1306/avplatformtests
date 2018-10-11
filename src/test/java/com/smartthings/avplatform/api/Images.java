@@ -24,8 +24,8 @@ public class Images extends Properties{
                 .when()
                 .get("/images")
                 .then()
-                .log()
-                .all()
+               // .log()
+               // .all()
                 .statusCode(200);
     }
 
@@ -39,8 +39,8 @@ public class Images extends Properties{
                 .when()
                 .get("/images")
                 .then()
-                .log()
-                .all()
+              /*  .log()
+                .all()*/
                 .statusCode(404);
     }
 
@@ -54,8 +54,6 @@ public class Images extends Properties{
                 .when()
                 .get("/images")
                 .then()
-                .log()
-                .all()
                 .statusCode(403);
     }
 
@@ -69,8 +67,6 @@ public class Images extends Properties{
                 .when()
                 .post("/image/record")
                 .then()
-                .log()
-                .all()
                 .statusCode(201);
 
         String imageID = getId(response,"image");
@@ -88,8 +84,8 @@ public class Images extends Properties{
                 .when()
                 .get("/image")
                 .then()
-                .log()
-                .all()
+               // .log()
+               // .all()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 OK")          //Status Line
                 .contentType("application/json");
@@ -102,8 +98,8 @@ public class Images extends Properties{
                 .queryParam("image_id",imageID)
                 .delete("/image")
                 .then()
-                .log()
-                .all()
+               // .log()
+               // .all()
                 .statusCode(204);
 
         SerenityRest.given()
@@ -114,8 +110,6 @@ public class Images extends Properties{
                 .when()
                 .get("/image")
                 .then()
-                .log()
-                .all()
                 .statusCode(404);
 
         System.out.println("Image deleted");
@@ -131,8 +125,8 @@ public class Images extends Properties{
                 .when()
                 .get("/image")
                 .then()
-                .log()
-                .all()
+             //   .log()
+             //   .all()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 OK")
                 .contentType("application/json");
@@ -144,8 +138,8 @@ public class Images extends Properties{
                 .when()
                 .get("/image")
                 .then()
-                .log()
-                .all()
+             //   .log()
+             //   .all()
                 .statusCode(200)
                 .statusLine("HTTP/1.1 200 OK")          //Status Line
                 .contentType("application/json");
@@ -182,8 +176,8 @@ public class Images extends Properties{
                 .when()
                 .get("/image")
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(200)
                 // .extract()//Response status code
                 .statusLine("HTTP/1.1 200 OK")          //Status Line
@@ -202,8 +196,8 @@ public class Images extends Properties{
                 .when()
                 .get("/image")
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(403);
     }
 
@@ -217,8 +211,8 @@ public class Images extends Properties{
                 .when()
                 .get("/image")
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(404);
     }
 
@@ -233,8 +227,8 @@ public class Images extends Properties{
                 .when()
                 .get("/image")
                 .then()
-                .log()
-                .all()
+             //   .log()
+             //   .all()
                 .statusCode(404);
     }
 
@@ -248,8 +242,8 @@ public class Images extends Properties{
                 .when()
                 .post("/image/record")
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(201).and().time(lessThan(ResponseTime));
     }
 
@@ -263,8 +257,8 @@ public class Images extends Properties{
                 .when()
                 .post("/image/record")
                 .then()
-                .log()
-                .all()
+             //   .log()
+             //   .all()
                 .statusCode(403).and().time(lessThan(ResponseTime));
     }
 
@@ -278,8 +272,8 @@ public class Images extends Properties{
                 .when()
                 .post("/image/record")
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(403);
     }
 
@@ -293,8 +287,8 @@ public class Images extends Properties{
                 .when()
                 .post("/image/record")
                 .then()
-                .log()
-                .all()
+             //   .log()
+             //   .all()
                 .statusCode(404);
     }
 
@@ -309,8 +303,8 @@ public class Images extends Properties{
                 .when()
                 .post("/image/record")
                 .then()
-                .log()
-                .all()
+             //   .log()
+             //   .all()
                 .statusCode(201);
 
         Thread.sleep(5000);
@@ -322,8 +316,8 @@ public class Images extends Properties{
                 .when()
                 .get(mediaURL)
                 .then()
-                .log()
-                .all()
+             //   .log()
+             //   .all()
                 .statusCode(200)
                 .and().contentType("image/jpeg");
     }
@@ -337,8 +331,8 @@ public class Images extends Properties{
                 .when()
                 .get(InvalidImageMediaURL)
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(404); // Status code 404 changed to 400 as per  AVPLATFORM-887
     }
 
@@ -353,8 +347,8 @@ public class Images extends Properties{
                 .when()
                 .post("/image/record")
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(201)
                 .contentType("application/json");
 
@@ -371,8 +365,8 @@ public class Images extends Properties{
                 .queryParam("image_id",InvalidImageId)
                 .delete("/image")
                 .then()
-                .log()
-                .all()
+            //   .log()
+            //    .all()
                 .statusCode(404);
     }
 
@@ -388,8 +382,8 @@ public class Images extends Properties{
                 .queryParam("image_id",ImageId)
                 .delete("/image")
                 .then()
-                .log()
-                .all()
+             //   .log()
+             //   .all()
                 .statusCode(404);
     }
 
@@ -405,8 +399,8 @@ public class Images extends Properties{
                 .queryParam("image_id",ImageId)
                 .delete("/image")
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(403);
     }
 
@@ -421,8 +415,8 @@ public class Images extends Properties{
                 .when()
                 .post("/image/record")
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(201);
 
         Thread.sleep(5000);
@@ -439,8 +433,8 @@ public class Images extends Properties{
                 .when()
                 .get("/image")
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(200);
 
         String responseString = getResponseAsString(getResponse);
@@ -467,8 +461,8 @@ public class Images extends Properties{
                 .when()
                 .get("/image")
                 .then()
-                .log()
-                .all()
+            //    .log()
+            //    .all()
                 .statusCode(200);
 
         String imageId = getId(response,"image");

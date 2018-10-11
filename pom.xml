@@ -14,10 +14,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <!--<serenity.version>1.6.1</serenity.version>-->
-        <serenity.version>1.9.31</serenity.version>
+        <serenity.version>2.0.4</serenity.version>
         <!-- <slf4j.version>1.6.1</slf4j.version> -->
-        <!--<serenity.maven.version>1.6.1</serenity.maven.version>-->
-        <serenity.maven.version>1.6.1</serenity.maven.version>
+        <serenity.maven.version>2.0.4</serenity.maven.version>
         <webdriver.driver>firefox</webdriver.driver>
         <serenity.cucumber.version>1.6.1</serenity.cucumber.version>
         <!--<serenity.maven.version>1.6.1</serenity.maven.version>-->

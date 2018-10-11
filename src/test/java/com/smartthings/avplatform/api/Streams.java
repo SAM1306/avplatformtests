@@ -32,8 +32,8 @@ public class Streams extends Properties {
                 .when()
                 .post("/stream")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(201)
                 .time(lessThan(ResponseTime));
 
@@ -179,8 +179,8 @@ public class Streams extends Properties {
                 .when()
                 .post("/stream")
                 .then()
-                .log()
-                .all()
+//                .log()
+//                .all()
                 .statusCode(201);
 
         System.out.println("Stream Requested");
